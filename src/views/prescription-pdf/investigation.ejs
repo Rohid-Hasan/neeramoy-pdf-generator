@@ -1,0 +1,45 @@
+ <!-- investigations -->
+ <div class="flex flex-col">
+   <% if (prescription.Investigations.length) { %>
+   <div class="flex flex-col mb-4">
+     <% if (!pConfig.hideInvestigationTitle) { %>
+     <div class="text-xl mb-2 font-semibold text-black">
+       <%= pConfig.investigationTitle %>
+     </div>
+     <% } %>
+
+     <div class="flex flex-col gap-2">
+       <% prescription.Investigations.forEach(function(item, i) { %>
+       <div class="flex flex-col text-base font-normal dark-light leading-5">
+         <div class="flex flex-wrap items-center gap-x-2.5">
+           <% if (pConfig.investigationListStyle===PILS.BULLET_POINT) { %>
+           <img src="<%= imageThree %>" alt="bullet point" />
+           <% } %>
+
+           <% if (pConfig.investigationListStyle===PILS.NUMBER) { %>
+           <span>
+             <%= i+1 %>.
+           </span>
+           <% } %>
+
+           <%= item.label %>
+
+           <% if (item.instruction) { %>
+           <span class="text-sm italic dark">
+             (<%= item.instruction %>)
+           </span>
+           <% } %>
+         </div>
+
+         <% if (item.result) { %>
+         <div class="text-sm dark ml-3">
+           <span>Result:</span>
+           <%= item.result %>
+         </div>
+         <% } %>
+       </div>
+       <% }) %>
+     </div>
+   </div>
+   <% } %>
+ </div>

@@ -1,0 +1,10 @@
+src/graphql/generated.ts
+src/assets/**
+src/app/global/icon-names.ts
+src/app/typings
+node_modules
+.vscode
+nginx
+.github
+.angular
+.idea

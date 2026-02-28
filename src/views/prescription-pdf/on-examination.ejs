@@ -1,0 +1,92 @@
+<!-- on examination start here -->
+
+<div class="flex flex-col">
+  <% if (prescription.OnExamination && prescription.OnExaminationKeys?.length) { %>
+  <div class="flex flex-col mb-4">
+    <% if (!pConfig.hideOnExaminationTitle) { %>
+    <div class="text-xl mb-2 font-semibold text-black">
+      <%= pConfig.onExaminationTitle %>
+    </div>
+    <% } %>
+
+    <div class="flex flex-col gap-2">
+      <% for (let index = 0; index < prescription.OnExaminationKeys.length; index++) { %>
+      <% const key = prescription.OnExaminationKeys[index]; %>
+      <div class="flex flex-col text-base font-normal dark-light leading-5">
+        <div class="flex items-start gap-x-2.5">
+          <% if (pConfig.onExaminationListStyle === PILS.BULLET_POINT) { %>
+          <img src="<%= imageThree %>" alt="bullet point" class="mt-2" />
+          <% } else if (pConfig.onExaminationListStyle === PILS.NUMBER) { %>
+          <span><%= index + 1 + "." %></span>
+          <% } %>
+
+          <% if (key === 'bmi') { %>
+          <div class="bmi w-100">
+            <span class="key">BMI:</span>
+            <span class="value text-dark font-medium">
+              <%= prescription.OnExamination[key]?.bmi %>
+              <span class="special-note" <% if (prescription.OnExamination[key]?.specialNote) { %>>(<%= prescription.OnExamination[key]?.specialNote %>)<% } %></span>
+            </span>
+          </div>
+          <% } else if (key === 'pregnancyCalendar') { %>
+          <div class="pregnancy-data">
+            <span class="key">Pregnancy:</span>
+            <span class="value text-dark font-medium">
+              <%= prescription.OnExamination.pregnancyCalendar?.currently %>
+              <span class="special-note" <% if (prescription.OnExamination[key]?.specialNote) { %>>(<%= prescription.OnExamination[key]?.specialNote %>)<% } %></span>
+            </span>
+          </div>
+          <% } else if (key === 'temperature' || key === 'pulse') { %>
+          <div class="temperate-or-pulse">
+            <span class="key"><%= prescription.OnExaminationEnum[key] %>:</span>
+            <span class="value text-dark font-medium">
+              <%= prescription.OnExamination[key]?.value %> <%= prescription.OnExamination[key]?.type %>
+              <span class="special-note" <% if (prescription.OnExamination[key]?.specialNote) { %>>(<%= prescription.OnExamination[key]?.specialNote %>)<% } %></span>
+            </span>
+          </div>
+          <% } else if (['hypertension', 'heartDisease', 'kidneyDisease', 'asthma', 'hyperlipidemia', 'backPain', 'cancer', 'diabetesMellitus', 'lactating','pregnancy', 'liverDisease'].includes(key)) { %>
+          <div class="yes-no-model">
+            <span class="key"><%=  prescription.OnExaminationEnum[key]  %>:</span>
+            <span class="value text-dark font-medium">
+              <%= prescription.OnExamination[key]?.isActive ? "Yes" : "No" %>
+              <span class="special-note" <% if (prescription.OnExamination[key]?.specialNote) { %>>(<%= prescription.OnExamination[key]?.specialNote %>)<% } %></span>
+            </span>
+          </div>
+          <% } else if (key === 'extraNote') { %>
+          <div class="extra-data">
+            <span class="key">Special Note:</span>
+            <span class="value text-dark font-medium">
+              <%= prescription.OnExamination?.extraNote %>
+            </span>
+          </div>
+          <% } %>
+        </div>
+      </div>
+      <% } %>
+      <div class="flex flex-col gap-2">
+        <% if (prescription.OnExamination?.extraFields) { %>
+        <% for (let i = 0; i < prescription.OnExamination.extraFields.length || 0; i++) { %>
+        <% const extraField = prescription.OnExamination.extraFields[i]; %>
+        <div class="flex flex-col text-base font-normal dark-light leading-5">
+          <div class="flex items-start gap-x-2.5">
+            <% if (pConfig.onExaminationListStyle === PILS.BULLET_POINT) { %>
+            <img src="<%= imageThree %>" alt="bullet point" class="mt-2" />
+            <% } else if (pConfig.onExaminationListStyle === PILS.NUMBER) { %>
+            <span><%=  prescription.OnExaminationKeys.length + i + 1 + "." %></span>
+            <% } %>
+
+            <div class="extra-fields">
+              <span class="key"><%= extraField.fieldName %>:</span>
+              <span class="value text-dark font-medium"><%= extraField.fieldValue %></span>
+            </div>
+          </div>
+        </div>
+        <% } %>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<!-- on examination ends here -->

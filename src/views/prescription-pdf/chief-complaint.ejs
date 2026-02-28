@@ -1,0 +1,39 @@
+<div class="flex flex-col">
+  <% if(prescription.Complaints.length) { %>
+  <div class="flex flex-col mb-4">
+
+    <% if(!pConfig.hideComplaintTitle) { %>
+    <div class="text-xl font-semibold mb-2 text-black">
+      <%= pConfig.complaintTitle %>
+    </div>
+    <% } %>
+
+    <div class="flex flex-col gap-2">
+      <% prescription.Complaints.forEach(function(item, i) { %>
+      <div class="flex flex-col text-base font-normal dark-light leading-5">
+        <div class="flex flex-wrap items-center gap-x-2.5">
+          <% if (pConfig.complaintListStyle===PILS.BULLET_POINT) { %>
+          <img src="<%= imageThree %>" class="mt-2" />
+          <% } else if (pConfig.complaintListStyle===PILS.NUMBER) { %>
+          <span>
+            <%= i+1 %>.
+          </span>
+          <% } %>
+          <%= item.label %>
+          <% if (item.for) { %>
+          <span class="text-sm italic dark">(for <%= item.for %>
+            <%= item.period %>)</span>
+          <% } %>
+        </div>
+        <% if (item.note) { %>
+        <div class="text-sm dark whitespace-pre-line mt-[-0.875rem] ms-5">
+          <%= item.note %>
+        </div>
+        <% } %>
+      </div>
+      <% }); %>
+    </div>
+
+  </div>
+  <% } %>
+</div>

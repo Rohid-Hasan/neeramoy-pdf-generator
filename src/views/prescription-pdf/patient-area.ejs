@@ -1,0 +1,75 @@
+ <% if (prescription.PatientArea && (prescription.PatientArea.division || prescription.PatientArea.details)) { %>
+ <div class="flex flex-col my-4">
+   <div class="text-xl font-medium mb-1 dark-light">Client Area</div>
+
+   <div class="flex flex-col gap-2.5">
+     <!-- Division -->
+     <% if(prescription.PatientArea.division) { %>
+     <div class="flex flex-col text-sm font-normal dark-light leading-5">
+       <div class="flex items-start gap-x-2.5">
+         <img src="<%= imageThree %>" class="mt-2" />
+         <div class="flex-1 flex items-center gap-2">
+           <div class="text-neutral-800 font-semibold text-base">
+             Division:
+           </div>
+           <div class="text-base text-gray-600 font-normal">
+             <%= prescription.PatientArea.division %>
+           </div>
+         </div>
+       </div>
+     </div>
+     <% } %>
+
+     <!-- District -->
+     <% if(prescription.PatientArea.district) { %>
+     <div class="flex flex-col text-sm font-normal dark-light leading-5">
+       <div class="flex items-start gap-x-2.5">
+         <img src="<%= imageThree %>" class="mt-2" />
+         <div class="flex-1 flex items-center gap-2">
+           <div class="text-neutral-800 font-semibold text-base">
+             District:
+           </div>
+           <div class="text-base text-gray-600 font-normal">
+             <%= prescription.PatientArea.district %>
+           </div>
+         </div>
+       </div>
+     </div>
+     <% } %>
+
+     <!-- Upazila -->
+     <% if(prescription.PatientArea.upazila) { %>
+     <div class="flex flex-col text-sm font-normal dark-light leading-5">
+       <div class="flex items-start gap-x-2.5">
+         <img src="<%= imageThree %>" class="mt-2" />
+         <div class="flex-1 flex items-center gap-2">
+           <div class="text-neutral-800 font-semibold text-base">
+             Upazila:
+           </div>
+           <div class="text-base text-gray-600 font-normal">
+             <%= prescription.PatientArea.upazila %>
+           </div>
+         </div>
+       </div>
+     </div>
+     <% } %>
+
+     <!-- Details -->
+     <% if(prescription.PatientArea.details) { %>
+     <div class="flex flex-col text-sm font-normal dark-light leading-5">
+       <div class="flex items-start gap-x-2.5">
+         <img src="<%= imageThree %>" class="mt-2" />
+         <div class="flex-1 flex items-center gap-2">
+           <div class="text-neutral-800 font-semibold text-base">
+             Details:
+           </div>
+           <div class="text-base text-gray-600 font-normal">
+             <%= prescription.PatientArea.details %>
+           </div>
+         </div>
+       </div>
+     </div>
+     <% } %>
+   </div>
+ </div>
+ <% } %>

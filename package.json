@@ -1,0 +1,41 @@
+{
+    "name": "@rohid-hasan/neeramoy-pdf-generator",
+    "version": "1.0.3",
+    "description": "Neeramoy PDF Generation Engine",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rohid-hasan/neeramoy-pdf-generator.git"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "scripts": {
+        "build": "tsc && copyfiles -u 1 \"src/views/**/*\" \"src/assets/**/*\" dist/",
+        "prepublishOnly": "npm run build",
+        "publish-package": "npm publish",
+        "release": "npm version patch && npm publish",
+        "release:minor": "npm version minor && npm publish",
+        "release:major": "npm version major && npm publish"
+    },
+    "dependencies": {
+        "date-fns": "^4.1.0",
+        "ejs": "^4.0.1"
+    },
+    "devDependencies": {
+        "@types/ejs": "^3.1.5",
+        "@types/node": "^25.0.10",
+        "copyfiles": "^2.4.1",
+        "prettier": "^3.8.1",
+        "prettier-plugin-organize-imports": "^4.3.0",
+        "typescript": "^5.9.3"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs"
+}

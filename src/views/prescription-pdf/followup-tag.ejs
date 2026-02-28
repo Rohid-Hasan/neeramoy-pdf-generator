@@ -1,0 +1,30 @@
+ <% if (!!prescription.FollowupTag.date || prescription.FollowupTag.items.length) { %>
+ <div class="flex flex-col">
+   <% if (!pConfig.hideFollowupTitle) { %>
+   <div class="text-xl mb-2 font-semibold text-black">
+     <%= pConfig.followupTitle %>
+   </div>
+   <% } %>
+
+   <div class="flex flex-col gap-2">
+     <% if (prescription.FollowupTag.date) { %>
+     <div class="text-base font-semibold dark-light">
+       <%= prescription.FollowupTag.date %>
+     </div>
+     <% } %>
+
+     <% prescription.FollowupTag.items.forEach(function(item, i) { %>
+     <div class="flex flex-col text-sm font-normal dark-light leading-5">
+       <div class="flex flex-wrap items-center gap-x-2.5">
+         <% if (pConfig.followupListStyle===PILS.BULLET_POINT) { %>
+         <img src="<%= imageThree %>" class="mt-2" />
+         <% } else if (pConfig.followupListStyle===PILS.NUMBER) { %>
+         <%= i+1 + '.' %>
+         <% } %>
+         <%= item %>
+       </div>
+     </div>
+     <% }); %>
+   </div>
+ </div>
+ <% } %>

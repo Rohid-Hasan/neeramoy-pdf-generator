@@ -1,0 +1,39 @@
+<% if (prescription.DistressLevels && (prescription.DistressLevels.start || prescription.DistressLevels.end || prescription.DistressLevels.start == 0 || prescription.DistressLevels.end == 0)) { %>
+<div class="flex flex-col my-4">
+  <div class="text-xl font-medium mb-1 dark-light">
+    Distress Level
+  </div>
+
+  <div class="flex flex-col gap-2.5">
+    <!-- Start -->
+    <div class="flex flex-col text-sm font-normal dark-light leading-5">
+      <div class="flex items-start gap-x-2.5">
+        <img src="<%= imageThree %>" class="mt-2" />
+        <div class="flex-1 flex items-center gap-2">
+          <div class="text-neutral-800 font-semibold text-base">
+            Start:
+          </div>
+          <div class="text-base text-gray-600 font-normal">
+            <%= prescription.DistressLevels.start %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End -->
+    <div class="flex flex-col text-sm font-normal dark-light leading-5">
+      <div class="flex items-start gap-x-2.5">
+        <img src="<%= imageThree %>" class="mt-2" />
+        <div class="flex-1 flex items-center gap-2">
+          <div class="text-neutral-800 font-semibold text-base">
+            End:
+          </div>
+          <div class="text-base text-gray-600 font-normal">
+            <%= prescription.DistressLevels.end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>

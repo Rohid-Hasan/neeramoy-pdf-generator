@@ -1,0 +1,73 @@
+<div class="grid grid-cols-4 justify-between py-2.5 border-b border-slate-700">
+  <div class="text-base dark-light font-medium">
+    <% if (isPsychologist) { %>
+    Client:
+    <% } else { %>
+    Patient:
+    <% } %>
+    <span class="dart-mid-dark font-normal ml-1">
+      <%= prescription.Patient.Name %>
+    </span>
+  </div>
+
+  <% if(!pConfig.hideAge) { %>
+  <div class="text-base dark-light font-medium">
+    Age: <span class="dart-mid-dark font-normal ml-1">
+      <%= prescription.Patient.Age || 'NA' %>
+    </span>
+  </div>
+  <% } %>
+
+
+  <% if(!pConfig.hideGender) { %>
+  <div class="text-base dark-light font-medium">
+    Gender: <span class="dart-mid-dark font-normal ml-1">
+      <%= prescription.Patient.Gender %>
+    </span>
+  </div>
+  <% } %>
+
+  <% if(!pConfig.hideBloodGroup  && prescription.Patient.BloodGroup) { %>
+  <div class="text-base dark-light font-medium">
+    BG: <span class="dart-mid-dark font-normal ml-1">
+      <%= prescription.Patient.BloodGroup || "" %>
+    </span>
+  </div>
+  <% } %>
+
+
+
+  <div class="text-base dark-light font-medium">
+    ID:<span class="dart-mid-dark font-normal ml-1">
+      <%= patientShortId %>
+    </span>
+  </div>
+
+
+  <% if(prescription.Patient.EmployeeId) { %>
+  <div class="text-base dark-light font-medium">
+    EID: <span class="dart-mid-dark font-normal ml-1">
+      <%= prescription.Patient.EmployeeId %>
+    </span>
+  </div>
+  <% } %>
+
+  <% if(pConfig.showDateTime) { %>
+
+  <div class="text-base dark-light font-medium me-3">
+    Date: <span class="dart-mid-dark font-normal ml-1">
+      <%= prescription.date %>
+    </span>
+  </div>
+  <div class="text-base dark-light font-medium">
+    Time: <span class="dart-mid-dark font-normal ml-1">
+      <%= prescription.time %>
+    </span>
+  </div>
+
+  <% } %>
+
+
+
+
+</div>

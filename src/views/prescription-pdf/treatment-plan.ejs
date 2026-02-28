@@ -1,0 +1,37 @@
+ <!-- Treatment plan -->
+ <div class="flex flex-col">
+   <% if (prescription.TreatmentPlans?.length) { %>
+   <div class="flex flex-col mb-4">
+     <% if (!pConfig.hideTreatmentPlanTitle) { %>
+     <div class="text-xl font-medium mb-1 dark-light">
+       <%= pConfig.treatmentPlanTitle %>
+     </div>
+     <% } %>
+     <div class="flex flex-col gap-2">
+       <% prescription.TreatmentPlans.forEach(function(item, i) { %>
+       <div class="flex flex-col text-base font-normal dark-light leading-5">
+         <div class="flex flex-wrap items-center gap-x-2.5">
+           <% if (pConfig.treatmentPlanListStyle==PILS.BULLET_POINT ) { %>
+           <img src="<%= imageThree %>" class="mt-2" />
+           <% } else if (pConfig.treatmentPlanListStyle==PILS.NUMBER ) { %>
+           <span>
+             <%= i+1 %>.
+           </span>
+           <% } %>
+           <%= item.label %>
+           <% if (item.for) { %>
+           <span class="text-sm italic dark">(for <%= item.for %>
+             <%= item.period %>)</span>
+           <% } %>
+         </div>
+         <% if (item.note) { %>
+         <div class="text-sm dark ml-3">
+           <%= item.note %>
+         </div>
+         <% } %>
+       </div>
+       <% }); %>
+     </div>
+   </div>
+   <% } %>
+ </div>

@@ -1,0 +1,35 @@
+<div class="flex flex-col">
+  <% if (prescription.Findings.length) { %>
+  <div class="flex flex-col mb-4">
+    <% if (!pConfig.hideFindingsTitle) { %>
+    <div class="text-xl mb-2 font-semibold text-black">
+      <%= pConfig.findingsTitle %>
+    </div>
+    <% } %>
+    <div class="flex flex-col gap-2">
+      <% prescription.Findings.forEach(function(item, i) { %>
+      <div class="flex flex-col text-base font-normal dark-light leading-5">
+        <div class="flex items-center gap-x-2.5">
+          <% if (pConfig.findingsListStyle==PILS.BULLET_POINT ) { %>
+          <img src="<%= imageThree %>" class="mt-2" />
+          <% } else if (pConfig.findingsListStyle==PILS.NUMBER ) { %>
+          <span>
+            <%= i+1 %>.
+          </span>
+          <% } %>
+          <span><%= item.label %></span>
+        </div>
+        <% if (item.note) { %>
+        <div class="text-sm dark ms-5 whitespace-pre-line mt-[-2.625rem]">
+          <% if (item.query) { %>
+          <span>Query:</span>
+          <% } %>
+          <%= item.note %>
+        </div>
+        <% } %>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+</div>

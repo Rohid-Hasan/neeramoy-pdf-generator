@@ -1,0 +1,25 @@
+ <!-- advices -->
+ <% if (prescription.Advices.length) { %>
+ <div class="flex flex-col my-4">
+   <% if (!pConfig.hideAdviceTitle) { %>
+   <div class="text-xl mb-2 font-semibold text-black">
+     <%= pConfig.adviceTitle %>
+   </div>
+   <% } %>
+
+   <div class="flex flex-col gap-2">
+     <% prescription.Advices.forEach(function(item, i) { %>
+     <div class="flex flex-col text-sm font-normal dark-light leading-5">
+       <div class="flex flex-wrap items-center gap-x-2.5">
+         <% if (pConfig.adviceListStyle===PILS.BULLET_POINT) { %>
+         <img src="<%= imageThree %>" class="mt-2" />
+         <% } else if (pConfig.adviceListStyle===PILS.NUMBER) { %>
+         <%= i+1 + '.' %>
+         <% } %>
+         <%= item.label %>
+       </div>
+     </div>
+     <% }); %>
+   </div>
+ </div>
+ <% } %>

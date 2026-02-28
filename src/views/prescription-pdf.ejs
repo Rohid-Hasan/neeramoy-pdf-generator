@@ -1,0 +1,85 @@
+<!-- language: ejs -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prescription PDF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wdth,wght@75..125,100..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              light: "#429394", //30% lighter
+              DEFAULT: "#357a7b", //primary
+              dark: "#135556" //15% darker
+            }
+          }
+        }
+      },
+      plugins: [
+
+      ],
+    }
+  </script>
+  <style>
+    body {
+      font-family: "Poppins", "Anek Bangla" !important
+    }
+
+    html {
+      font-size: <%=pConfig.baseFontSize %>px;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <div class="flex flex-col" id="print-section">
+      <div class="prescription-wrap">
+        <% if (!pConfig.isHeaderBlank) { %>
+        <%- include('./prescription-pdf/doctor-clinic.ejs') %>
+        <% }  %>
+
+        <%- include('./prescription-pdf/patient.ejs') %>
+
+        <div class="grid grid-cols-12 gap-5 mt-5 divide-x divide-slate-700">
+
+          <div class="col-span-5 flex flex-col gap-3">
+            <%- include('./prescription-pdf/patient-area.ejs') %>
+            <%- include('./prescription-pdf/chief-complaint.ejs') %>
+            <%- include('./prescription-pdf/history.ejs') %>
+            <%- include('./prescription-pdf/on-examination.ejs') %>
+            <%- include('./prescription-pdf/distress-levels.ejs') %>
+            <%- include('./prescription-pdf/finding.ejs') %>
+            <%- include('./prescription-pdf/diagnosis.ejs') %>
+            <%- include('./prescription-pdf/investigation.ejs') %>
+          </div>
+
+          <div class="col-span-7 pl-5 flex flex-col gap-3">
+            <%- include('./prescription-pdf/medicine.ejs') %>
+            <%- include('./prescription-pdf/well-being.ejs') %>
+            <%- include('./prescription-pdf/treatment-plan.ejs') %>
+            <%- include('./prescription-pdf/advice.ejs') %>
+            <%- include('./prescription-pdf/escalation.ejs') %>
+            <%- include('./prescription-pdf/followup-tag.ejs') %>
+            <%- include('./prescription-pdf/reffered-to.ejs') %>
+          </div>
+        </div>
+        <%- include('./prescription-pdf/footer.ejs') %>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

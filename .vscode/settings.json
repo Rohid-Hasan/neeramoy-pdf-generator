@@ -1,0 +1,23 @@
+{
+	"editor.fontFamily": "Fira Code",
+	"editor.fontLigatures": true,
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[ejs]": {
+		"editor.defaultFormatter": "j69.ejs-beautify",
+		"editor.formatOnSave": true
+	},
+	"emmet.includeLanguages": {
+		"ejs": "html"
+	},
+	"files.associations": {
+		// extension name : html
+		"*.ejs": "html",
+		"*.js": "html"
+	},
+	"[html]": {
+		"editor.defaultFormatter": "j69.ejs-beautify"
+	}
+}

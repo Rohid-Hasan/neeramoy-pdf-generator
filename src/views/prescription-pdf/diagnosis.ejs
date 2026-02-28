@@ -1,0 +1,37 @@
+<!-- diagnosis -->
+<div class="flex flex-col">
+  <% if (prescription.Diagnosis?.length) { %>
+  <div class="flex flex-col mb-4">
+    <% if (!pConfig.hideDiagnosisTitle) { %>
+    <div class="text-xl mb-2 font-semibold text-black">
+      <%= pConfig.diagnosisTitle %>
+    </div>
+    <% } %>
+    <div class="flex flex-col gap-2">
+      <% prescription.Diagnosis.forEach(function(item, i) { %>
+      <div class="flex flex-col text-base font-normal dark-light leading-5">
+        <div class="flex flex-wrap items-center gap-x-2.5">
+          <% if (pConfig.diagnosisListStyle==PILS.BULLET_POINT ) { %>
+          <img src="<%= imageThree %>" class="mt-2" />
+          <% } else if (pConfig.diagnosisListStyle==PILS.NUMBER ) { %>
+          <span>
+            <%= i+1 %>.
+          </span>
+          <% } %>
+          <%= item.label %>
+          <% if (item.for) { %>
+          <span class="text-sm italic dark">(for <%= item.for %>
+            <%= item.period %>)</span>
+          <% } %>
+        </div>
+        <% if (item.note) { %>
+        <div class="text-sm dark ml-3">
+          <%= item.note %>
+        </div>
+        <% } %>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+</div>

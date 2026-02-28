@@ -1,0 +1,118 @@
+<div class="flex flex-col">
+  <!-- v2 Prescription -->
+  <% if (prescription.MedicineTag.items.length) { %>
+  <div class="flex flex-col mb-2">
+    <% if (!pConfig.hideMedicineTitle) { %>
+    <div class="text-xl mb-2 font-semibold text-black">
+      <%= pConfig.medicineTitle %>
+    </div>
+    <% } %>
+
+    <div class="flex flex-col gap-4">
+      <% for (let i=0; i < prescription.MedicineTag.items.length; i++) { %>
+      <% let med=prescription.MedicineTag.items[i]; %>
+      <div class="flex">
+        <% if (pConfig.medicineListStyle===PILS.BULLET_POINT) { %>
+        <div class="pt-2 pr-2">
+          <img src="<%= imageThree %>" class="mt-2" />
+        </div>
+        <% } %>
+
+        <% if (pConfig.medicineListStyle===PILS.NUMBER) { %>
+        <div class="text-base font-medium text-neutral-800 mr-2 leading-6">
+          <%= i+1 + '. ' %>
+        </div>
+        <% } %>
+
+        <div class="flex-1 flex flex-col">
+          <div class="flex items-center text-base font-normal text-neutral-800 gap-x-2.5 leading-6">
+            <% if (med.type) { %>
+            <span class="font-normal">
+              <%= med.type %>.</span>
+            <% } %>
+            <span class="font-semibold text-black">
+              <%= med.drug %>
+            </span>
+            <% if (med.quantity) { %>
+            <span>-------</span>
+            <% } %>
+
+
+            <% if (med.quantity) { %>
+            <span class="flex gap-1 font-medium">
+              <span><%- med.fractionalTemplateQuantity %></span>
+              <%= med.quantityType %>
+            </span>
+            <% } %>
+          </div>
+
+
+          <div class="flex flex-wrap items-center text-sm font-normal dark-light gap-x-2.5 leading-4">
+            <% if (med.doseAmount && isV2Prescription) { %>
+            <span class="flex gap-1">
+              <span><%- med.fractionalTemplateDoseAmount %></span>
+              <%= med.doseType %>
+            </span>
+            <% } %>
+            <% if (med.doseAmount && med.schedule && isV2Prescription) { %>
+            <span>x</span>
+            <% } %>
+
+
+
+            <% if (med.schedule && isV2Prescription) { %>
+            <span class="flex gap-1">
+              <span><%- med.fractionalTemplateSchedule %></span>
+              <%= med.scheduleType %>
+            </span>
+            <% } %>
+
+
+            <% if (med.schedules && !isV2Prescription) { %>
+            <span class="flex gap-1">
+              <%- med.parseSchedules %> <% if (med.doseType) { %> (<%= med.doseType %>) <% } %>
+            </span>
+            <% } %>
+            <% if (med.remark) { %>
+            <span>-------</span>
+            <span>
+              <%= med.remark %>
+            </span>
+            <% } %>
+
+
+            <% if (med.duration) { %>
+            <span>-------</span>
+            <span class="flex gap-1">
+              <span><%- med.fractionalTemplateDuration
+                                                                            %></span>
+              <%= med.durationType %>
+            </span>
+            <% } %>
+
+            <% if (med.continuousDuration) { %>
+            <span>-------</span>
+            <span class="flex gap-1">
+              চলবে
+            </span>
+            <% } %>
+          </div>
+          <% if (!!med.note) { %>
+          <div class="text-xs text-black leading-4">
+            <span class="italic">Note:</span>
+            <%= med.note %>
+          </div>
+          <% } %>
+        </div>
+      </div>
+
+      <% } %>
+      <% if (prescription.MedicineTag.continuePrevious) { %>
+      <div class="continue-medicine">
+        <div class="text-sm font-medium text-primary">আগের ওষুধ চলবে...</div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+  <% } %>
+</div>

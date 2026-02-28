@@ -1,0 +1,12 @@
+singleQuote: false
+trailingComma: "none"
+semi: false
+useTabs: false
+tabWidth: 4
+plugins:
+    - prettier-plugin-organize-imports
+printWidth: 80 # default or for general files
+overrides:
+    - files: "*.ts"
+      options:
+          printWidth: 110

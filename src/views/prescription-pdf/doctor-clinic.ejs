@@ -1,0 +1,74 @@
+<div class="flex flex-col border-b border-slate-700">
+  <div class="flex">
+    <div class="flex-1 flex flex-col text-left mb-4">
+      <div class="text-primary text-lg font-bold">
+        <%= prescription.Doctor.Name %>
+      </div>
+      <div class="dark-light text-sm font-normal">
+        <%= prescription.Doctor.EducationalQualification %>
+      </div>
+
+
+      <div class="flex flex-col text-primary text-base font-semibold mt-2">
+        <% if(prescription.Doctor.Title) { %>
+        <div>
+          <%= prescription.Doctor.Title %>
+        </div>
+        <% } %>
+
+
+        <% if(prescription.Doctor.Specialties) { %>
+        <div>
+          <%= prescription.Doctor.Specialties %>
+        </div>
+        <% } %>
+      </div>
+
+
+      <div class="dark-extra-light text-sm font-normal">
+        <%= prescription.Doctor.Address %>
+      </div>
+
+      <% if(prescription.Doctor.BMDC) { %>
+      <div class="text-sm font-normal dark-extra-light mt-3">
+        BMDC: <span class="dark font-medium">
+          <%= prescription.Doctor.BMDC %>
+        </span>
+      </div>
+      <% } %>
+
+
+    </div>
+
+    <div class="flex-1 flex flex-col justify-end text-right dark-extra-light mb-4">
+      <% if(pConfig.showClinicInfo && prescription.Clinic) { %>
+      <div class="flex-1 flex flex-col">
+        <% if(prescription.Clinic.Name) { %>
+        <div class="brand-semi-light text-lg font-bold">
+          <%= prescription.Clinic.Name %>
+        </div>
+        <% } %>
+        <% if(prescription.Clinic.Address) { %>
+        <div class="dark-extra-light text-sm font-normal">
+          <%= prescription.Clinic.Address %>
+        </div>
+        <% } %>
+      </div>
+      <% } %>
+
+      <div class="text-sm font-normal">
+        Date: <span class="dart-black">
+          <%= prescription.date %>
+        </span>
+      </div>
+
+      <div class="text-sm font-normal">
+        Time: <span class="dart-black">
+          <%= prescription.time %>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+</div>
