@@ -13,9 +13,8 @@
 		"ejs": "html"
 	},
 	"files.associations": {
-		// extension name : html
 		"*.ejs": "html",
-		"*.js": "html"
+		"*.js": "javascript"
 	},
 	"[html]": {
 		"editor.defaultFormatter": "j69.ejs-beautify"

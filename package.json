@@ -15,12 +15,11 @@
         "registry": "https://npm.pkg.github.com"
     },
     "scripts": {
-        "build": "tsc && copyfiles -u 1 \"src/views/**/*\" \"src/assets/**/*\" dist/",
-        "prepublishOnly": "npm run build",
-        "publish-package": "npm publish",
-        "release": "npm version patch && npm publish",
-        "release:minor": "npm version minor && npm publish",
-        "release:major": "npm version major && npm publish"
+        "build": "node scripts/bundle-templates.js && tsc",
+        "dev:bundle": "nodemon --watch src/views --watch src/assets -e ejs,png,svg,jpg --exec \"node scripts/bundle-templates.js\"",
+        "dev:tsc": "tsc --watch",
+        "dev": "concurrently \"npm run dev:bundle\" \"npm run dev:tsc\"",
+        "release": "npm version patch && npm publish"
     },
     "dependencies": {
         "date-fns": "^4.1.0",
@@ -29,7 +28,8 @@
     "devDependencies": {
         "@types/ejs": "^3.1.5",
         "@types/node": "^25.0.10",
-        "copyfiles": "^2.4.1",
+        "concurrently": "^9.2.1",
+        "nodemon": "^3.1.14",
         "prettier": "^3.8.1",
         "prettier-plugin-organize-imports": "^4.3.0",
         "typescript": "^5.9.3"
