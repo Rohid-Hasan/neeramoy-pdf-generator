@@ -1,6 +1,6 @@
 {
     "name": "@rohid-hasan/neeramoy-pdf-generator",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "Neeramoy PDF Generation Engine",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
