@@ -26,37 +26,27 @@
     }
   </script>
   <style>
-    body {
-      font-family: "Poppins", "Anek Bangla" !important;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      /* Dynamic Base Font Size */
-      font-size: <%=pConfig.baseFontSize || 12 %>px;
-    }
-
     @media print {
       @page {
         size: A4;
-        /* Dynamic Margins derived from pConfig */
-        margin-top: <%=(pConfig.isHeaderBlank && pConfig.headerHeight) ? pConfig.headerHeight + 'px': (pConfig.margin?.top ? pConfig.margin.top + 'cm' : '1cm') %>;
-        margin-bottom: <%=pConfig.margin?.bottom ? pConfig.margin.bottom + 'cm': '1cm'%>;
-        margin-left: <%=pConfig.margin?.left ? pConfig.margin.left + 'cm': '1cm'%>;
-        margin-right: <%=pConfig.margin?.right ? pConfig.margin.right + 'cm': '1cm'%>;
+        margin: 0 !important;
       }
 
       body {
+        padding-top: <%=(pConfig.isHeaderBlank && pConfig.headerHeight) ? pConfig.headerHeight + 'px': (pConfig.margin?.top ? pConfig.margin.top + 'cm' : '1cm') %>;
+        padding-bottom: <%=pConfig.margin?.bottom ? pConfig.margin.bottom + 'cm': '1cm'%>;
+        padding-left: <%=pConfig.margin?.left ? pConfig.margin.left + 'cm': '1cm'%>;
+        padding-right: <%=pConfig.margin?.right ? pConfig.margin.right + 'cm': '1cm'%>;
+
+        /* Ensure colors/backgrounds print */
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+        font-family: "Poppins", "Anek Bangla" !important;
       }
+    }
 
-      /* Removes the default browser header/footer text */
-      header,
-      footer {
-        display: none !important;
-      }
+    html {
+      font-size: <%=pConfig.baseFontSize || 12 %>px;
     }
 
     /* Wrap to ensure layout doesn't break if content is short */
