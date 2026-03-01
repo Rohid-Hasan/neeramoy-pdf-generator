@@ -1,11 +1,16 @@
-<div class="pt-5 border-t border-slate-200">
+<div class="fixed bottom-0 right-0 w-full">
+
   <div class="grid grid-cols-12 items-center">
 
+    <!-- Empty space -->
     <div class="col-span-2"></div>
 
+    <!-- Signature / Note Section -->
     <div class="col-span-8 text-center text-[#135556] font-normal text-xs mx-3">
 
       <% if (isBracEmployee) { %>
+
+      <!-- BRAC Note (centered) -->
       <div class="text-center">
         <span class="font-medium">Note: </span>
         <span class="italic">
@@ -15,7 +20,10 @@
           insurance purposes.
         </span>
       </div>
+
       <% } else if (pConfig.signature?.type === SignatureType.NOTE) { %>
+
+      <!-- NOTE type (centered) -->
       <div class="text-center">
         <span class="font-medium">Note: </span>
         <span class="italic">
@@ -24,21 +32,33 @@
           for the treatment and consultation provided by the healthcare provider.
         </span>
       </div>
+
       <% } else { %>
+
+      <!-- Signature (RIGHT aligned) ABOVE the footer block -->
       <div class="flex justify-end w-full">
+
         <% if (pConfig.signature?.type === SignatureType.URL && pConfig.signature?.url) { %>
+
         <img class="w-[12rem] mt-2" src="<%= pConfig.signature?.url %>" alt="Signature" />
+
         <% } else if (pConfig.signature?.type === SignatureType.TEXT && pConfig.signature?.text?.trim() !== '') { %>
+
         <div class="text-2xl font-normal leading-5 brand-darkest mt-2 signature">
           <%= pConfig.signature?.text %>
         </div>
+
         <% } %>
+
       </div>
+
       <% } %>
 
     </div>
 
+    <!-- Bottom Right Block -->
     <div class="col-span-2 flex justify-end items-center gap-2.5 my-3">
+
       <div class="flex items-center gap-1">
         <img class="w-8" src="<%= imageTwo %>" alt="Neeramoy" />
         <div class="flex flex-col mt-1">
@@ -46,8 +66,11 @@
           <div class="text-[#767676] text-[6px] font-normal leading-3">www.neeramoy.com</div>
         </div>
       </div>
+
       <img class="w-6" src="<%= image %>" alt="QR" />
+
     </div>
 
   </div>
+
 </div>
