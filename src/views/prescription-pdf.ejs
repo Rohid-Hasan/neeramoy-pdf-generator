@@ -39,7 +39,36 @@
     html {
       font-size: <%=pConfig.baseFontSize %>px;
     }
+
+    /* This targets the physical paper settings */
+    @page {
+      size: auto;
+      /* auto is the initial value */
+      margin: 0mm;
+      /* This removes the headers/footers */
+    }
+
+    /* Since we set page margin to 0, we must add padding to the body 
+     so the content doesn't touch the edge of the paper */
+    body {
+      background-color: #FFFFFF;
+      margin: 0px;
+      /* reset browser default margin */
+      padding: 20mm;
+      /* Adjust this to give your prescription a nice border */
+    }
+
+    /* Optional: Hide everything else if any UI leaks through */
+    @media print {
+
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+      }
+    }
   </style>
+
 </head>
 
 <body>
