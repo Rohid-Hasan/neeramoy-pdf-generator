@@ -1,3 +1,5 @@
+import * as fs from "fs"
+import * as path from "path"
 import { generatePrescriptionPDF } from "../index"
 
 async function runTest() {
@@ -16,6 +18,33 @@ async function runTest() {
             RefferedTo: {},
             Complaints: [
                 { label: "cold", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
+                { label: "Runny nose", for: 1, period: "Days" },
                 { label: "Runny nose", for: 1, period: "Days" }
             ],
             Histories: [],
@@ -35,6 +64,279 @@ async function runTest() {
             },
             MedicineTag: {
                 items: [
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
+                    {
+                        drug: "Fexo 120",
+                        type: "Tablet",
+                        generic: "Fexofenadine Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "",
+                        schedules: "0 + 0 + 1",
+                        remark: "খাবার পরে",
+                        duration: 3,
+                        durationType: "দিন",
+                        continuousDuration: false
+                    },
+                    {
+                        drug: "Antazol",
+                        type: "Nasal Drops",
+                        generic: "Xylometazoline Hydrochloride",
+                        doseAmount: 1,
+                        doseType: "Unit",
+                        schedules: "1 + 0 + 1",
+                        remark: "খাবার পরে"
+                    },
                     {
                         drug: "Fexo 120",
                         type: "Tablet",
@@ -88,7 +390,7 @@ async function runTest() {
             investigationListStyle: "BULLET_POINT",
             medicineTitle: "Medicine (Rx)",
             signature: {
-                type: "TEXT",
+                type: "NOTE",
                 note: "This is a computer-generated Prescription by doctor. No signature is required.",
                 text: ""
             },
@@ -120,16 +422,31 @@ async function runTest() {
             medicineListStyle: "NUMBER",
             hideGender: false,
             treatmentPlanListStyle: "NUMBER",
-            diagnosisListStyle: "BULLET_POINT"
+            diagnosisListStyle: "BULLET_POINT",
+            baseFontSize: 16
         }
     }
 
     try {
         const html = await generatePrescriptionPDF(testData as any)
-        console.log("---------------- GENERATED HTML START ----------------")
-        console.log(html)
-        console.log("----------------  GENERATED HTML END  ----------------")
-        console.log("✅ Success! HTML generated successfully.")
+
+        console.log("✅ HTML generated successfully.")
+
+        // Create output directory if not exists
+        const outputDir = path.join(__dirname, "output")
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir, { recursive: true })
+        }
+
+        // Create file name with timestamp
+        const fileName = `prescription.html`
+        const filePath = path.join(outputDir, fileName)
+
+        // Write HTML to file
+        await fs.promises.writeFile(filePath, html, "utf-8")
+
+        console.log(`📁 File saved at: ${filePath}`)
+        console.log("Open it in your browser to preview.")
     } catch (error) {
         console.error("❌ Error generating PDF:", error)
     }

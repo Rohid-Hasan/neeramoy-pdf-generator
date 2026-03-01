@@ -26,25 +26,14 @@
     }
   </script>
   <style>
-    /* Embed Anek Bangla Variable Font */
-    @font-face {
-      font-family: 'Anek Bangla';
-      src: url('<%= fontAnekBangla %>') format('truetype-variations');
-      font-weight: 100 800;
-      font-stretch: 75% 125%;
-      font-style: normal;
-      font-display: block;
-    }
-
-    body {
-      /* Anek Bangla is now the primary and only font */
-      font-family: "Anek Bangla", sans-serif !important;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      font-size: <%=pConfig.baseFontSize || 12 %>px;
+    /* Define units outside the media query for better engine support */
+    :root {
+      --top-m: <%=(pConfig.isHeaderBlank && pConfig.headerHeight) ? pConfig.headerHeight + 'px': (pConfig.margin?.top ? pConfig.margin.top + 'cm' : '1cm') %>;
+      --bottom-m: <%=pConfig.margin?.bottom ? pConfig.margin.bottom + 'cm': '1cm'%>;
+      --left-m: <%=pConfig.margin?.left ? pConfig.margin.left + 'cm': '1cm'%>;
+      --right-m: <%=pConfig.margin?.right ? pConfig.margin.right + 'cm': '1cm'%>;
+      /* Reserving space for the actual footer content (approx 80px-100px) */
+      --footer-height: 100px;
     }
 
     @media print {
@@ -54,72 +43,114 @@
       }
 
       body {
-        /* Use Padding to simulate margins and clear browser headers/footers */
-        padding-top: <%=(pConfig.isHeaderBlank && pConfig.headerHeight) ? pConfig.headerHeight + 'px': (pConfig.margin?.top ? pConfig.margin.top + 'cm' : '1cm') %>;
-        padding-bottom: <%=pConfig.margin?.bottom ? pConfig.margin.bottom + 'cm': '1cm'%>;
-        padding-left: <%=pConfig.margin?.left ? pConfig.margin.left + 'cm': '1cm'%>;
-        padding-right: <%=pConfig.margin?.right ? pConfig.margin.right + 'cm': '1cm'%>;
-
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+        margin: 0;
+        padding: 0;
       }
-    }
 
-    /* THE CORE FIX: Flexbox Layout */
-    .prescription-container {
-      display: flex;
-      flex-direction: column;
-      /* 100vh is one full page. We subtract top and bottom padding. */
-      min-height: calc(100vh - (var(--top-m) + var(--bottom-m)));
-    }
+      .print-table {
+        width: 100%;
+        border-collapse: collapse;
+        /* Ensures the table respects the heights we give it */
+        table-layout: fixed;
+      }
 
-    .main-content {
-      flex-grow: 1;
-    }
+      /* Force the thead and tfoot cells to take up the margin space */
+      .print-header-space {
+        height: var(--top-m);
+      }
 
-    .prescription-wrap {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
+      .print-footer-space {
+        /* We need the margin PLUS the height of the fixed footer */
+        height: calc(var(--bottom-m) + var(--footer-height));
+      }
+
+      .print-footer {
+        position: fixed;
+        bottom: var(--bottom-m);
+        /* This keeps it above the bottom margin */
+        left: var(--left-m);
+        right: var(--right-m);
+        height: var(--footer-height);
+        background: white;
+        z-index: 9999;
+      }
+
+      .content-area {
+        padding-left: var(--left-m);
+        padding-right: var(--right-m);
+      }
+
+      /* Prevent rows from breaking awkwardly */
+      tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="flex flex-col" id="print-section">
-    <div class="prescription-container">
-      <div class="main-content">
-        <% if (!pConfig.isHeaderBlank) { %>
-        <%- include('./prescription-pdf/doctor-clinic.ejs') %>
-        <% } %>
+  <table class="print-table">
+    <thead>
+      <tr>
+        <td>
+          <div class="print-header-space"></div>
+        </td>
+      </tr>
+    </thead>
 
-        <%- include('./prescription-pdf/patient.ejs') %>
+    <tbody>
+      <tr>
+        <td>
+          <div class="content-area">
+            <div class="prescription-wrap">
+              <% if (!pConfig.isHeaderBlank) { %>
+              <%- include('./prescription-pdf/doctor-clinic.ejs') %>
+              <% } %>
 
-        <div class="grid grid-cols-12 gap-5 mt-5 divide-x divide-slate-700">
-          <div class="col-span-5 flex flex-col gap-3">
-            <%- include('./prescription-pdf/patient-area.ejs') %>
-            <%- include('./prescription-pdf/chief-complaint.ejs') %>
-            <%- include('./prescription-pdf/history.ejs') %>
-            <%- include('./prescription-pdf/on-examination.ejs') %>
-            <%- include('./prescription-pdf/distress-levels.ejs') %>
-            <%- include('./prescription-pdf/finding.ejs') %>
-            <%- include('./prescription-pdf/diagnosis.ejs') %>
-            <%- include('./prescription-pdf/investigation.ejs') %>
+              <%- include('./prescription-pdf/patient.ejs') %>
+
+              <div class="grid grid-cols-12 gap-5 mt-5 divide-x divide-slate-700">
+                <div class="col-span-5 flex flex-col gap-3">
+                  <%- include('./prescription-pdf/patient-area.ejs') %>
+                  <%- include('./prescription-pdf/chief-complaint.ejs') %>
+                  <%- include('./prescription-pdf/history.ejs') %>
+                  <%- include('./prescription-pdf/on-examination.ejs') %>
+                  <%- include('./prescription-pdf/distress-levels.ejs') %>
+                  <%- include('./prescription-pdf/finding.ejs') %>
+                  <%- include('./prescription-pdf/diagnosis.ejs') %>
+                  <%- include('./prescription-pdf/investigation.ejs') %>
+                </div>
+
+                <div class="col-span-7 pl-5 flex flex-col gap-3">
+                  <%- include('./prescription-pdf/medicine.ejs') %>
+                  <%- include('./prescription-pdf/well-being.ejs') %>
+                  <%- include('./prescription-pdf/treatment-plan.ejs') %>
+                  <%- include('./prescription-pdf/advice.ejs') %>
+                  <%- include('./prescription-pdf/escalation.ejs') %>
+                  <%- include('./prescription-pdf/followup-tag.ejs') %>
+                  <%- include('./prescription-pdf/reffered-to.ejs') %>
+                </div>
+              </div>
+            </div>
           </div>
+        </td>
+      </tr>
+    </tbody>
 
-          <div class="col-span-7 pl-5 flex flex-col gap-3">
-            <%- include('./prescription-pdf/medicine.ejs') %>
-            <%- include('./prescription-pdf/well-being.ejs') %>
-            <%- include('./prescription-pdf/treatment-plan.ejs') %>
-            <%- include('./prescription-pdf/advice.ejs') %>
-            <%- include('./prescription-pdf/escalation.ejs') %>
-            <%- include('./prescription-pdf/followup-tag.ejs') %>
-            <%- include('./prescription-pdf/reffered-to.ejs') %>
-          </div>
-        </div>
-      </div>
-      <%- include('./prescription-pdf/footer.ejs') %>
-    </div>
+    <tfoot>
+      <tr>
+        <td>
+          <div class="print-footer-space"></div>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div class="print-footer">
+    <%- include('./prescription-pdf/footer.ejs') %>
   </div>
 </body>
 
