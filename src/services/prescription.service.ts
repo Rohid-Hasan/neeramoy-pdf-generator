@@ -69,12 +69,16 @@ export const generatePrescriptionPDF = async (body: {
         mainTemplate,
         {
             ...body,
+            // Pass the Base64 font string
+            fontAnekBangla: ASSET_REGISTRY["font-anek-bangla"],
+
             image: ASSET_REGISTRY["neeramoy-qr.png"],
             imageTwo: ASSET_REGISTRY["logo-mini.svg"],
             imageThree: ASSET_REGISTRY["bullet-point.svg"],
+
             prescription: prescription,
             patientShortId: prescription.Patient?.Id?.split("-")[4] || "N/A",
-            pConfig: pConfig, // Injected into EJS for margin/font-size logic
+            pConfig: pConfig,
             PILS: PrescriptionItemListStyleEnum,
             SignatureType: SignatureTypeEnum,
             isV2Prescription: prescription.Version === PrescriptionVersionEnum.V2

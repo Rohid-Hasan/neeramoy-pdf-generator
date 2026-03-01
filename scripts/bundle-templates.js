@@ -21,11 +21,12 @@ function getFiles(dir, allFiles = {}) {
     return allFiles
 }
 
-// Convert images to Base64 at build time
 function getAssets() {
-    const assets = ["neeramoy-qr.png", "logo-mini.svg", "bullet-point.svg"]
     const assetData = {}
-    assets.forEach((asset) => {
+
+    // 1. Regular Images
+    const images = ["neeramoy-qr.png", "logo-mini.svg", "bullet-point.svg"]
+    images.forEach((asset) => {
         const filePath = path.join(assetsDir, asset)
         if (fs.existsSync(filePath)) {
             const ext = path.extname(asset).substring(1)
@@ -37,6 +38,21 @@ function getAssets() {
                 prefix + fs.readFileSync(filePath).toString("base64")
         }
     })
+
+    // 2. Fonts (Variable Font)
+    const fontPath = path.join(
+        assetsDir,
+        "fonts/Anek_Bangla/AnekBangla-VariableFont_wdth,wght.ttf"
+    )
+    if (fs.existsSync(fontPath)) {
+        // We use a clean key for the font
+        assetData["font-anek-bangla"] =
+            "data:font/ttf;base64," +
+            fs.readFileSync(fontPath).toString("base64")
+    } else {
+        console.warn("⚠️ Font file not found at:", fontPath)
+    }
+
     return assetData
 }
 
@@ -45,8 +61,8 @@ const assets = getAssets()
 
 const tsContent = `
 export const TEMPLATE_REGISTRY: Record<string, string> = ${JSON.stringify(templates, null, 2)};
-  export const ASSET_REGISTRY: Record<string, string> = ${JSON.stringify(assets, null, 2)};
-    `
+export const ASSET_REGISTRY: Record<string, string> = ${JSON.stringify(assets, null, 2)};
+`
 
 fs.writeFileSync(outputFile, tsContent)
 console.log("✅ Template and Asset registry generated!")

@@ -26,6 +26,27 @@
     }
   </script>
   <style>
+    /* Embed Anek Bangla Variable Font */
+    @font-face {
+      font-family: 'Anek Bangla';
+      src: url('<%= fontAnekBangla %>') format('truetype-variations');
+      font-weight: 100 800;
+      font-stretch: 75% 125%;
+      font-style: normal;
+      font-display: block;
+    }
+
+    body {
+      /* Anek Bangla is now the primary and only font */
+      font-family: "Anek Bangla", sans-serif !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: <%=pConfig.baseFontSize || 12 %>px;
+    }
+
     @media print {
       @page {
         size: A4;
@@ -33,23 +54,17 @@
       }
 
       body {
+        /* Use Padding to simulate margins and clear browser headers/footers */
         padding-top: <%=(pConfig.isHeaderBlank && pConfig.headerHeight) ? pConfig.headerHeight + 'px': (pConfig.margin?.top ? pConfig.margin.top + 'cm' : '1cm') %>;
         padding-bottom: <%=pConfig.margin?.bottom ? pConfig.margin.bottom + 'cm': '1cm'%>;
         padding-left: <%=pConfig.margin?.left ? pConfig.margin.left + 'cm': '1cm'%>;
         padding-right: <%=pConfig.margin?.right ? pConfig.margin.right + 'cm': '1cm'%>;
 
-        /* Ensure colors/backgrounds print */
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
-        font-family: "Poppins", "Anek Bangla" !important;
       }
     }
 
-    html {
-      font-size: <%=pConfig.baseFontSize || 12 %>px;
-    }
-
-    /* Wrap to ensure layout doesn't break if content is short */
     .prescription-wrap {
       width: 100%;
       display: flex;
