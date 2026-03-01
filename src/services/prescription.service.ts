@@ -1,7 +1,7 @@
 import * as ejs from "ejs"
 import { IPrescriptionConfig } from "../models/prescription-config.model"
-import { IPrescription } from "../models/prescription.model"
-import { PrescriptionUtil } from "../utilities/prescription.util"
+import { IMedicine, IPrescription } from "../models/prescription.model"
+import { ModifyMedicineType, PrescriptionUtil } from "../utilities/prescription.util"
 import { ASSET_REGISTRY, TEMPLATE_REGISTRY } from "../views/template-registry"
 
 export const generatePrescriptionPDF = async (body: {
@@ -12,10 +12,28 @@ export const generatePrescriptionPDF = async (body: {
     isBracEmployee: boolean
 }) => {
     const prescription: any = body.prescription
+    prescription.MedicineTag?.items?.forEach((el: IMedicine) => {
+        if (el.type) {
+            el.type = ModifyMedicineType(el.type)
+        }
+    })
 
-    // ... (Keep your existing data transformation logic here) ...
     const util = new PrescriptionUtil()
-    // (Prescription data processing stays exactly the same)
+    for (const med of prescription.MedicineTag.items) {
+        med["parseSchedules"] = util.parseSchedules(med.schedules)
+        med["fractionalTemplateQuantity"] = util.fractionalTemplate(med.quantity)
+        med["fractionalTemplateDoseAmount"] = util.fractionalTemplate(med.doseAmount)
+        med["fractionalTemplateSchedule"] = util.fractionalTemplate(med.schedule)
+        med["fractionalTemplateDuration"] = util.fractionalTemplate(med.duration)
+    }
+
+    prescription.date = util.getDate(body.datetime)
+    prescription.time = util.getTime(body.datetime)
+    prescription.OnExaminationKeys = util.getKeysOfOnExamination(prescription)
+    prescription.OnExaminationEnum = {}
+    for (const key of prescription.OnExaminationKeys) {
+        prescription.OnExaminationEnum[key] = util.getShortNameOfOnExaminationAttribute(key)
+    }
 
     const PrescriptionItemListStyleEnum = { NUMBER: "NUMBER", BULLET_POINT: "BULLET_POINT", NONE: "NONE" }
     const SignatureTypeEnum = { URL: "URL", TEXT: "TEXT", NOTE: "NOTE" }
@@ -25,19 +43,14 @@ export const generatePrescriptionPDF = async (body: {
 
     const options = {
         client: false,
-        filename: "prescription-pdf.ejs", // Helps EJS track depth
-        // The 'includer' is the key to bypassing the filesystem
         includer: (originalPath: string) => {
-            // Normalize path: './prescription-pdf/doctor-clinic.ejs' -> 'prescription-pdf/doctor-clinic.ejs'
             const cleanName = originalPath.replace(/^\.\//, "").replace(/\.ejs$/, "") + ".ejs"
-
             const template = TEMPLATE_REGISTRY[cleanName]
 
             if (!template) {
-                console.error(`❌ EJS Includer: Could not find [${cleanName}] in TEMPLATE_REGISTRY`)
+                console.warn(`⚠️ EJS Includer: [${cleanName}] not found in registry.`)
                 return { template: "" }
             }
-
             return { template }
         }
     }
