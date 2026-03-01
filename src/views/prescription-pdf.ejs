@@ -1,6 +1,3 @@
-<!-- language: ejs -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,96 +16,92 @@
         extend: {
           colors: {
             primary: {
-              light: "#429394", //30% lighter
-              DEFAULT: "#357a7b", //primary
-              dark: "#135556" //15% darker
+              light: "#429394",
+              DEFAULT: "#357a7b",
+              dark: "#135556"
             }
           }
         }
-      },
-      plugins: [
-
-      ],
+      }
     }
   </script>
   <style>
     body {
-      font-family: "Poppins", "Anek Bangla" !important
+      font-family: "Poppins", "Anek Bangla" !important;
+      margin: 0;
+      padding: 0;
     }
 
     html {
-      font-size: <%=pConfig.baseFontSize %>px;
+      /* Dynamic Base Font Size */
+      font-size: <%=pConfig.baseFontSize || 12 %>px;
     }
 
-    /* This targets the physical paper settings */
-    @page {
-      size: auto;
-      /* auto is the initial value */
-      margin: 0mm;
-      /* This removes the headers/footers */
-    }
-
-    /* Since we set page margin to 0, we must add padding to the body 
-     so the content doesn't touch the edge of the paper */
-    body {
-      background-color: #FFFFFF;
-      margin: 0px;
-      /* reset browser default margin */
-      padding: 20mm;
-      /* Adjust this to give your prescription a nice border */
-    }
-
-    /* Optional: Hide everything else if any UI leaks through */
     @media print {
+      @page {
+        size: A4;
+        /* Dynamic Margins derived from pConfig */
+        margin-top: <%=(pConfig.isHeaderBlank && pConfig.headerHeight) ? pConfig.headerHeight + 'px': (pConfig.margin?.top ? pConfig.margin.top + 'cm' : '1cm') %>;
+        margin-bottom: <%=pConfig.margin?.bottom ? pConfig.margin.bottom + 'cm': '1cm'%>;
+        margin-left: <%=pConfig.margin?.left ? pConfig.margin.left + 'cm': '1cm'%>;
+        margin-right: <%=pConfig.margin?.right ? pConfig.margin.right + 'cm': '1cm'%>;
+      }
 
-      html,
       body {
-        width: 210mm;
-        height: 297mm;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* Removes the default browser header/footer text */
+      header,
+      footer {
+        display: none !important;
       }
     }
-  </style>
 
+    /* Wrap to ensure layout doesn't break if content is short */
+    .prescription-wrap {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
 </head>
 
 <body>
-  <div>
-    <div class="flex flex-col" id="print-section">
-      <div class="prescription-wrap">
-        <% if (!pConfig.isHeaderBlank) { %>
-        <%- include('./prescription-pdf/doctor-clinic.ejs') %>
-        <% }  %>
+  <div class="flex flex-col" id="print-section">
+    <div class="prescription-wrap">
+      <% if (!pConfig.isHeaderBlank) { %>
+      <%- include('./prescription-pdf/doctor-clinic.ejs') %>
+      <% } %>
 
-        <%- include('./prescription-pdf/patient.ejs') %>
+      <%- include('./prescription-pdf/patient.ejs') %>
 
-        <div class="grid grid-cols-12 gap-5 mt-5 divide-x divide-slate-700">
-
-          <div class="col-span-5 flex flex-col gap-3">
-            <%- include('./prescription-pdf/patient-area.ejs') %>
-            <%- include('./prescription-pdf/chief-complaint.ejs') %>
-            <%- include('./prescription-pdf/history.ejs') %>
-            <%- include('./prescription-pdf/on-examination.ejs') %>
-            <%- include('./prescription-pdf/distress-levels.ejs') %>
-            <%- include('./prescription-pdf/finding.ejs') %>
-            <%- include('./prescription-pdf/diagnosis.ejs') %>
-            <%- include('./prescription-pdf/investigation.ejs') %>
-          </div>
-
-          <div class="col-span-7 pl-5 flex flex-col gap-3">
-            <%- include('./prescription-pdf/medicine.ejs') %>
-            <%- include('./prescription-pdf/well-being.ejs') %>
-            <%- include('./prescription-pdf/treatment-plan.ejs') %>
-            <%- include('./prescription-pdf/advice.ejs') %>
-            <%- include('./prescription-pdf/escalation.ejs') %>
-            <%- include('./prescription-pdf/followup-tag.ejs') %>
-            <%- include('./prescription-pdf/reffered-to.ejs') %>
-          </div>
+      <div class="grid grid-cols-12 gap-5 mt-5 divide-x divide-slate-700">
+        <div class="col-span-5 flex flex-col gap-3">
+          <%- include('./prescription-pdf/patient-area.ejs') %>
+          <%- include('./prescription-pdf/chief-complaint.ejs') %>
+          <%- include('./prescription-pdf/history.ejs') %>
+          <%- include('./prescription-pdf/on-examination.ejs') %>
+          <%- include('./prescription-pdf/distress-levels.ejs') %>
+          <%- include('./prescription-pdf/finding.ejs') %>
+          <%- include('./prescription-pdf/diagnosis.ejs') %>
+          <%- include('./prescription-pdf/investigation.ejs') %>
         </div>
-        <%- include('./prescription-pdf/footer.ejs') %>
+
+        <div class="col-span-7 pl-5 flex flex-col gap-3">
+          <%- include('./prescription-pdf/medicine.ejs') %>
+          <%- include('./prescription-pdf/well-being.ejs') %>
+          <%- include('./prescription-pdf/treatment-plan.ejs') %>
+          <%- include('./prescription-pdf/advice.ejs') %>
+          <%- include('./prescription-pdf/escalation.ejs') %>
+          <%- include('./prescription-pdf/followup-tag.ejs') %>
+          <%- include('./prescription-pdf/reffered-to.ejs') %>
+        </div>
       </div>
+      <%- include('./prescription-pdf/footer.ejs') %>
     </div>
   </div>
-
 </body>
 
 </html>
