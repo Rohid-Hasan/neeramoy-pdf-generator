@@ -1,1 +1,1 @@
-export { generatePrescriptionPDF } from "./services/prescription.service"
+export { generateUniversalPdf } from "./services/prescription.service"

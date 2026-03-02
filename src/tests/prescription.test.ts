@@ -1,6 +1,6 @@
 import * as fs from "fs"
 import * as path from "path"
-import { generatePrescriptionPDF } from "../index"
+import { generateUniversalPdf } from "../index"
 
 async function runTest() {
     console.log("🚀 Starting PDF Generation Test...")
@@ -428,25 +428,22 @@ async function runTest() {
     }
 
     try {
-        const html = await generatePrescriptionPDF(testData as any)
+        const pdfBuffer = await generateUniversalPdf()
 
-        console.log("✅ HTML generated successfully.")
-
-        // Create output directory if not exists
-        const outputDir = path.join(__dirname, "output")
+        // Ensure output directory exists
+        const outputDir = path.join(__dirname, "./output")
         if (!fs.existsSync(outputDir)) {
-            fs.mkdirSync(outputDir, { recursive: true })
+            fs.mkdirSync(outputDir)
         }
 
-        // Create file name with timestamp
-        const fileName = `prescription.html`
-        const filePath = path.join(outputDir, fileName)
+        const outputPath = path.join(outputDir, "prescription.pdf")
 
-        // Write HTML to file
-        await fs.promises.writeFile(filePath, html, "utf-8")
+        // Write the Buffer to a PDF file
+        fs.writeFileSync(outputPath, pdfBuffer as Buffer)
 
-        console.log(`📁 File saved at: ${filePath}`)
-        console.log("Open it in your browser to preview.")
+        console.log(`✅ PDF Generated Successfully!`)
+        console.log(`📂 Location: ${outputPath}`)
+        console.log(`💡 Tip: Right-click the file in VS Code and select "Reveal in Explorer" to open it.`)
     } catch (error) {
         console.error("❌ Error generating PDF:", error)
     }

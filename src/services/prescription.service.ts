@@ -1,88 +1,56 @@
-import * as ejs from "ejs"
-import { IPrescriptionConfig } from "../models/prescription-config.model"
-import { IMedicine, IPrescription } from "../models/prescription.model"
-import { ModifyMedicineType, PrescriptionUtil } from "../utilities/prescription.util"
-import { ASSET_REGISTRY, TEMPLATE_REGISTRY } from "../views/template-registry"
+import * as pdfMakeModule from "pdfmake/build/pdfmake"
+import * as pdfFontsModule from "pdfmake/build/vfs_fonts"
+import { BufferOptions, TDocumentDefinitions, TFontDictionary } from "pdfmake/interfaces"
 
-export const generatePrescriptionPDF = async (body: {
-    datetime: string
-    prescription: IPrescription
-    prescriptionConfig: IPrescriptionConfig
-    isPsychologist: boolean
-    isBracEmployee: boolean
-}) => {
-    const prescription: any = body.prescription
+/** * Type-safe casting: We tell TS that our interop object
+ * matches the official pdfmake interface.
+ */
+const pdfMake = ((pdfMakeModule as any).default || pdfMakeModule) as typeof import("pdfmake")
 
-    // 1. Medicine & Schedule Transformation
-    prescription.MedicineTag?.items?.forEach((el: IMedicine) => {
-        if (el.type) {
-            el.type = ModifyMedicineType(el.type)
-        }
-    })
+// Clean VFS extraction
+const vfs = (pdfFontsModule as any).pdfMake?.vfs || (pdfFontsModule as any).vfs
+pdfMake.addVirtualFileSystem(vfs)
 
-    const util = new PrescriptionUtil()
-    for (const med of prescription.MedicineTag?.items || []) {
-        med["parseSchedules"] = util.parseSchedules(med.schedules)
-        med["fractionalTemplateQuantity"] = util.fractionalTemplate(med.quantity)
-        med["fractionalTemplateDoseAmount"] = util.fractionalTemplate(med.doseAmount)
-        med["fractionalTemplateSchedule"] = util.fractionalTemplate(med.schedule)
-        med["fractionalTemplateDuration"] = util.fractionalTemplate(med.duration)
-    }
+export const generateUniversalPdf = async () => {
+    console.log("🛠️  Generating Type-Safe PDF...")
 
-    // 2. Examination & Metadata
-    prescription.date = util.getDate(body.datetime)
-    prescription.time = util.getTime(body.datetime)
-    prescription.OnExaminationKeys = util.getKeysOfOnExamination(prescription)
-    prescription.OnExaminationEnum = {}
-    for (const key of prescription.OnExaminationKeys) {
-        prescription.OnExaminationEnum[key] = util.getShortNameOfOnExaminationAttribute(key)
-    }
-
-    // 3. Enums & Config
-    const PrescriptionItemListStyleEnum = { NUMBER: "NUMBER", BULLET_POINT: "BULLET_POINT", NONE: "NONE" }
-    const SignatureTypeEnum = { URL: "URL", TEXT: "TEXT", NOTE: "NOTE" }
-    const PrescriptionVersionEnum = { V2: "v2-desktop", V3: "v3-desktop" }
-
-    const pConfig = body.prescriptionConfig
-    // Default Base Font Size if not provided
-    if (!pConfig.baseFontSize) {
-        pConfig.baseFontSize = 12
-    }
-
-    const mainTemplate = TEMPLATE_REGISTRY["prescription-pdf.ejs"]
-
-    const options = {
-        client: false,
-        includer: (originalPath: string) => {
-            const cleanName = originalPath.replace(/^\.\//, "").replace(/\.ejs$/, "") + ".ejs"
-            const template = TEMPLATE_REGISTRY[cleanName]
-            if (!template) {
-                console.warn(`⚠️ EJS Includer: [${cleanName}] not found in registry.`)
-                return { template: "" }
-            }
-            return { template }
+    // Now you get autocomplete for content, styles, etc.
+    const docDefinition: TDocumentDefinitions = {
+        content: [
+            { text: "Hello World", fontSize: 25, bold: true, color: "#357a7b" },
+            { text: "Type-safe Neeramoy PDF Engine", marginTop: 10 }
+        ],
+        defaultStyle: {
+            font: "Roboto"
         }
     }
 
-    // 4. Render HTML String
-    return ejs.render(
-        mainTemplate,
-        {
-            ...body,
-            // Pass the Base64 font string
-            fontAnekBangla: ASSET_REGISTRY["font-anek-bangla"],
+    /**
+     * Correct 0.3.5 Font Handling
+     * If createPdf doesn't take 3 args in your version's types,
+     * use addFonts() or setFonts() before creating the PDF.
+     */
+    const fonts: TFontDictionary = {
+        Roboto: {
+            normal: "Roboto-Regular.ttf",
+            bold: "Roboto-Medium.ttf",
+            italics: "Roboto-Italic.ttf",
+            bolditalics: "Roboto-MediumItalic.ttf"
+        }
+    }
 
-            image: ASSET_REGISTRY["neeramoy-qr.png"],
-            imageTwo: ASSET_REGISTRY["logo-mini.svg"],
-            imageThree: ASSET_REGISTRY["bullet-point.svg"],
+    // Register fonts globally to the instance so createPdf knows them
+    pdfMake.addFonts(fonts)
 
-            prescription: prescription,
-            patientShortId: prescription.Patient?.Id?.split("-")[4] || "N/A",
-            pConfig: pConfig,
-            PILS: PrescriptionItemListStyleEnum,
-            SignatureType: SignatureTypeEnum,
-            isV2Prescription: prescription.Version === PrescriptionVersionEnum.V2
-        },
-        options
-    )
+    try {
+        // Now you get suggestions for the 2nd argument (BufferOptions)
+        const options: BufferOptions = {}
+        const docGenerator = pdfMake.createPdf(docDefinition, options)
+
+        const buffer = await docGenerator.getBuffer()
+        return buffer
+    } catch (error) {
+        console.error("❌ PDF Generation failed:", error)
+        throw error
+    }
 }
