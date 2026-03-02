@@ -1,6 +1,7 @@
 import { TDocumentDefinitions } from "pdfmake/interfaces"
 import { IGeneratePrescription } from "../../models/generate-prescription.model"
 import { getDoctorClinicSection } from "./doctor-clinic"
+import { getPatientSection } from "./patient-info"
 
 export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocumentDefinitions => {
     const pConfig = data.prescriptionConfig
@@ -21,15 +22,17 @@ export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocum
         },
         content: [
             // Only Doctor/Clinic section for now
-            getDoctorClinicSection(data, baseSize)
-
+            getDoctorClinicSection(data, baseSize),
+            getPatientSection(data, baseSize)
             // Future sections will go here:
             // getPatientSection(data, baseSize),
             // getGridSection(data, baseSize),
         ],
         styles: {
             primaryText: { color: "#357a7b", bold: true },
-            secondaryText: { color: "#64748b", fontSize: baseSize * 0.85 }
+            secondaryText: { color: "#64748b", fontSize: baseSize * 0.85 },
+            label: { color: "#334155", bold: true, fontSize: baseSize }, // dark-light font-medium
+            value: { color: "#475569", bold: false, fontSize: baseSize } // dart-mid-dark font-normal
         }
     }
 }
