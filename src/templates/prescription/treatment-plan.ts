@@ -2,14 +2,14 @@ import { Content } from "pdfmake/interfaces"
 import { IGeneratePrescription } from "../../models/generate-prescription.model"
 import { EPrescriptionListStyle } from "../../models/prescription.model"
 
-export const getChiefComplaintSection = (data: IGeneratePrescription, baseSize: number): Content => {
+export const getTreatmentPlanSection = (data: IGeneratePrescription, baseSize: number): Content => {
     const { prescription, prescriptionConfig: pConfig } = data
-    const complaints = prescription.Complaints || []
+    const plans = prescription.TreatmentPlans || []
 
-    if (complaints.length === 0) return ""
+    if (plans.length === 0) return ""
 
-    // 1. Build the items for the list
-    const listItems = complaints.map((item) => {
+    // Cast as any[] to avoid the pdfmake 0.3.x 'ContentAttachment' type error
+    const listItems: any[] = plans.map((item) => {
         const mainLineText: any[] = [{ text: item.label, style: "valueNormal" }]
 
         if (item.for) {
@@ -19,8 +19,7 @@ export const getChiefComplaintSection = (data: IGeneratePrescription, baseSize: 
             })
         }
 
-        // Using a stack for the label + note ensures they stay together
-        const itemStack: any = [
+        const itemStack: any[] = [
             { text: mainLineText },
             item.note
                 ? {
@@ -34,15 +33,17 @@ export const getChiefComplaintSection = (data: IGeneratePrescription, baseSize: 
         return { stack: itemStack }
     })
 
-    // 2. Return the section with the title and the dynamic list
-    return {
+    const section: any = {
         marginTop: 15,
         stack: [
-            !pConfig.hideComplaintTitle ? { text: pConfig.complaintTitle, style: "sectionHeaderBlack" } : "",
-            // Use built-in 'ol' for numbers or 'ul' for bullets
-            pConfig.complaintListStyle === EPrescriptionListStyle.NUMBER
+            !pConfig.hideTreatmentPlanTitle
+                ? { text: pConfig.treatmentPlanTitle, style: "sectionHeaderBlack" }
+                : undefined,
+            pConfig.treatmentPlanListStyle === EPrescriptionListStyle.NUMBER
                 ? { ol: listItems, margin: [0, 5, 0, 0] }
                 : { ul: listItems, margin: [0, 5, 0, 0] }
-        ]
+        ].filter(Boolean)
     }
+
+    return section as Content
 }

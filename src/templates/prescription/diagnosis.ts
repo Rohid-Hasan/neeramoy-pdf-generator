@@ -2,14 +2,14 @@ import { Content } from "pdfmake/interfaces"
 import { IGeneratePrescription } from "../../models/generate-prescription.model"
 import { EPrescriptionListStyle } from "../../models/prescription.model"
 
-export const getChiefComplaintSection = (data: IGeneratePrescription, baseSize: number): Content => {
+export const getDiagnosisSection = (data: IGeneratePrescription, baseSize: number): Content => {
     const { prescription, prescriptionConfig: pConfig } = data
-    const complaints = prescription.Complaints || []
+    const diagnoses = prescription.Diagnosis || []
 
-    if (complaints.length === 0) return ""
+    if (diagnoses.length === 0) return ""
 
-    // 1. Build the items for the list
-    const listItems = complaints.map((item) => {
+    const listItems = diagnoses.map((item) => {
+        // Main Line Text: Label + Duration (italic)
         const mainLineText: any[] = [{ text: item.label, style: "valueNormal" }]
 
         if (item.for) {
@@ -19,7 +19,7 @@ export const getChiefComplaintSection = (data: IGeneratePrescription, baseSize: 
             })
         }
 
-        // Using a stack for the label + note ensures they stay together
+        // Stack to handle the label and the note underneath
         const itemStack: any = [
             { text: mainLineText },
             item.note
@@ -34,13 +34,11 @@ export const getChiefComplaintSection = (data: IGeneratePrescription, baseSize: 
         return { stack: itemStack }
     })
 
-    // 2. Return the section with the title and the dynamic list
     return {
         marginTop: 15,
         stack: [
-            !pConfig.hideComplaintTitle ? { text: pConfig.complaintTitle, style: "sectionHeaderBlack" } : "",
-            // Use built-in 'ol' for numbers or 'ul' for bullets
-            pConfig.complaintListStyle === EPrescriptionListStyle.NUMBER
+            !pConfig.hideDiagnosisTitle ? { text: pConfig.diagnosisTitle, style: "sectionHeaderBlack" } : "",
+            pConfig.diagnosisListStyle === EPrescriptionListStyle.NUMBER
                 ? { ol: listItems, margin: [0, 5, 0, 0] }
                 : { ul: listItems, margin: [0, 5, 0, 0] }
         ]

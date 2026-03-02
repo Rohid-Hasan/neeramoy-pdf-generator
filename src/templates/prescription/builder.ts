@@ -1,9 +1,22 @@
 import { TDocumentDefinitions } from "pdfmake/interfaces"
 import { IGeneratePrescription } from "../../models/generate-prescription.model"
+import { getAdviceSection } from "./advice"
 import { getChiefComplaintSection } from "./chief-complaint"
+import { getDiagnosisSection } from "./diagnosis"
+import { getDistressLevelsSection } from "./distress-levels"
 import { getDoctorClinicSection } from "./doctor-clinic"
+import { getEscalationSection } from "./escalation"
+import { getFindingsSection } from "./findings"
+import { getFollowupSection } from "./follow-up"
+import { getHistorySection } from "./history"
+import { getInvestigationSection } from "./investigation"
+import { getMedicineSection } from "./medicine"
+import { getOnExaminationSection } from "./on-examination"
 import { getPatientAreaSection } from "./patient-area"
 import { getPatientSection } from "./patient-info"
+import { getReferredToSection } from "./reffered-to"
+import { getTreatmentPlanSection } from "./treatment-plan"
+import { getWellBeingSection } from "./well-being"
 
 export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocumentDefinitions => {
     const pConfig = data.prescriptionConfig
@@ -35,14 +48,26 @@ export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocum
                         width: "41.6%", // (5/12 * 100)
                         stack: [
                             getPatientAreaSection(data, baseSize),
-                            getChiefComplaintSection(data, baseSize)
+                            getChiefComplaintSection(data, baseSize),
+                            getHistorySection(data, baseSize),
+                            getOnExaminationSection(data, baseSize),
+                            getDistressLevelsSection(data, baseSize),
+                            getFindingsSection(data, baseSize),
+                            getDiagnosisSection(data, baseSize),
+                            getInvestigationSection(data, baseSize)
                         ]
                     },
                     // Right Column (col-span-7)
                     {
                         width: "58.4%", // (7/12 * 100)
                         stack: [
-                            // getMedicineSection(data, baseSize), etc...
+                            getMedicineSection(data, baseSize),
+                            getWellBeingSection(data, baseSize),
+                            getTreatmentPlanSection(data, baseSize),
+                            getAdviceSection(data, baseSize),
+                            getEscalationSection(data, baseSize),
+                            getFollowupSection(data, baseSize),
+                            getReferredToSection(data, baseSize)
                         ]
                     }
                 ]
@@ -68,6 +93,20 @@ export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocum
                 fontSize: baseSize,
                 color: "#4b5563", // gray-600
                 bold: false
+            },
+            subNote: {
+                fontSize: baseSize * 0.85,
+                color: "#475569",
+                preserveLeadingSpaces: true
+            },
+            drugName: {
+                fontSize: baseSize + 1, // base-base
+                bold: true,
+                color: "#000000"
+            },
+            medicineSubText: {
+                fontSize: baseSize * 0.9, // text-sm
+                color: "#4b5563" // gray-600 (dark-light)
             }
         }
     }
