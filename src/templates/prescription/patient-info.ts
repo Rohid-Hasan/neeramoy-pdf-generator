@@ -1,5 +1,8 @@
 import { Content, TableCell } from "pdfmake/interfaces"
 import { IGeneratePrescription } from "../../models/generate-prescription.model"
+import { PrescriptionUtil } from "../../utilities/prescription.util"
+
+const util = new PrescriptionUtil()
 
 export const getPatientSection = (data: IGeneratePrescription, baseSize: number): Content => {
     const { prescription, prescriptionConfig: pConfig, isPsychologist } = data
@@ -65,17 +68,17 @@ export const getPatientSection = (data: IGeneratePrescription, baseSize: number)
     }
 
     // Date & Time
-    if (pConfig.showDateTime) {
+    if (pConfig.showDateTime && pConfig.isHeaderBlank) {
         gridItems.push({
             text: [
                 { text: "Date: ", style: "label" },
-                { text: prescription.datetime || "", style: "value" }
+                { text: util.getDate(data.datetime) || "", style: "value" }
             ]
         })
         gridItems.push({
             text: [
                 { text: "Time: ", style: "label" },
-                { text: prescription.datetime || "", style: "value" }
+                { text: util.getTime(data.datetime) || "", style: "value" }
             ]
         })
     }
@@ -103,8 +106,8 @@ export const getPatientSection = (data: IGeneratePrescription, baseSize: number)
             hLineWidth: (i, node) => (i === node.table.body.length - 1 ? 0 : 0.5),
             vLineWidth: () => 0,
             hLineColor: "#cbd5e1", // slate-700
-            paddingTop: () => baseSize * 0.4,
-            paddingBottom: () => baseSize * 0.4
+            paddingTop: () => 0,
+            paddingBottom: () => 0
         }
     }
 }
