@@ -33,7 +33,6 @@ export const getDoctorClinicSection = (
     return {
         stack: [
             {
-                columnGap: 10,
                 columns: [
                     // Left Column: Doctor Info
                     {
@@ -48,7 +47,7 @@ export const getDoctorClinicSection = (
                             {
                                 text: formattedQualifications,
                                 fontSize: baseSize * 0.85,
-                                margin: [0, 2, 0, 0]
+                                margin: [0, 0, 0, 2]
                             },
                             // Conditionals must return an empty object {} or null if not present
                             prescription.Doctor.Title || prescription.Doctor.Specialties
@@ -58,8 +57,7 @@ export const getDoctorClinicSection = (
                                               ? {
                                                     text: prescription.Doctor.Title,
                                                     color: "#357a7b",
-                                                    bold: true,
-                                                    marginTop: 5
+                                                    bold: true
                                                 }
                                               : [],
                                           formattedSpecialties
@@ -75,7 +73,6 @@ export const getDoctorClinicSection = (
                             {
                                 text: prescription.Doctor.Address,
                                 fontSize: baseSize * 0.85,
-                                margin: [0, 5, 0, 0],
                                 color: "#64748b"
                             },
                             prescription.Doctor.BMDC

@@ -71,7 +71,7 @@ export const getMedicineSection = (data: IGeneratePrescription, baseSize: number
             })
         } else if (med.continuousDuration) {
             middleLine.push({ text: "  -------  ", color: "#cbd5e1" })
-            middleLine.push({ text: "চলবে", font: "AnekBangla" })
+            middleLine.push({ text: "চলবে" })
         }
 
         // 3. NOTE LINE
@@ -101,8 +101,7 @@ export const getMedicineSection = (data: IGeneratePrescription, baseSize: number
         medicineList.push({
             text: "আগের ওষুধ চলবে...",
             style: "primaryText",
-            marginTop: 10,
-            font: "AnekBangla"
+            marginTop: 10
         })
     }
 

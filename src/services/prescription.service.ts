@@ -15,19 +15,24 @@ const vfs = (pdfFontsModule as any).pdfMake?.vfs || (pdfFontsModule as any).vfs
 pdfMake.addVirtualFileSystem(vfs)
 
 export const generatePrescriptionPdf = async (data: IGeneratePrescription) => {
-    // 1. Add your custom font strings to the VFS
-    // We strip the "data:font/ttf;base64," prefix if it exists
-    const anekBase64 = ASSET_REGISTRY["font-anek-bangla"].split(",")[1]
+    // Helper to strip prefix
+    const getRawBase64 = (key: string) => ASSET_REGISTRY[key]?.split(",")[1]
 
-    // This virtually "saves" the file so PDFMake can find it by name
+    const anekBase = getRawBase64("font-anek-bangla")
+    const popReg = getRawBase64("poppins-regular")
+    const popBold = getRawBase64("poppins-bold")
+    const popItalic = getRawBase64("poppins-italic")
+
+    // 1. Add to Virtual File System
     pdfMake.addVirtualFileSystem({
-        ...vfs, // Keep Roboto
-        "AnekBangla.ttf": anekBase64
+        ...vfs,
+        "AnekBangla.ttf": anekBase,
+        "Poppins-Regular.ttf": popReg,
+        "Poppins-Bold.ttf": popBold,
+        "Poppins-Italic.ttf": popItalic
     })
 
-    const docDefinition: TDocumentDefinitions = buildPrescriptionDefinition(data)
-
-    // 2. Map the font names to the VFS files
+    // 2. Map the font names
     const fonts: TFontDictionary = {
         Roboto: {
             normal: "Roboto-Regular.ttf",
@@ -37,15 +42,22 @@ export const generatePrescriptionPdf = async (data: IGeneratePrescription) => {
         },
         AnekBangla: {
             normal: "AnekBangla.ttf",
-            bold: "AnekBangla.ttf", // Use same file if you don't have a separate Bold ttf
+            bold: "AnekBangla.ttf",
             italics: "AnekBangla.ttf",
             bolditalics: "AnekBangla.ttf"
+        },
+        Poppins: {
+            normal: "Poppins-Regular.ttf",
+            bold: "Poppins-Bold.ttf",
+            italics: "Poppins-Italic.ttf",
+            bolditalics: "Poppins-Bold.ttf" // Fallback to bold if BoldItalic is missing
         }
     }
 
     pdfMake.addFonts(fonts)
 
     try {
+        const docDefinition: TDocumentDefinitions = buildPrescriptionDefinition(data)
         const docGenerator = pdfMake.createPdf(docDefinition, {})
         return await docGenerator.getBuffer()
     } catch (error) {

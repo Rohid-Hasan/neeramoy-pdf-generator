@@ -30,7 +30,6 @@ export const getWellBeingSection = (data: IGeneratePrescription, baseSize: numbe
                       {
                           text: `ওয়েলবিং ${wb.result < 50 ? "খারাপ" : "ভাল"} (রেজাল্ট ৫০% এর ${wb.result < 50 ? "কম" : "অধিক"})`,
                           style: "subNote",
-                          font: "AnekBangla",
                           marginTop: 2
                       }
                   ]

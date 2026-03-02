@@ -31,7 +31,7 @@ export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocum
             (pConfig.margin?.bottom || 1) * 28.35
         ],
         defaultStyle: {
-            font: "AnekBangla",
+            font: "Poppins",
             fontSize: baseSize,
             color: "#334155" // slate-700 equivalent
         },

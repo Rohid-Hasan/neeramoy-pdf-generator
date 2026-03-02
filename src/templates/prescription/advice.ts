@@ -13,7 +13,6 @@ export const getAdviceSection = (data: IGeneratePrescription, baseSize: number):
         return {
             text: item.label,
             style: "valueNormal",
-            font: "AnekBangla", // Ensures Bengali rendering for medical advice
             lineHeight: 1.2
         }
     })
