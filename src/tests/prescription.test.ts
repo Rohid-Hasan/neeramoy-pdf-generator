@@ -1,6 +1,6 @@
 import * as fs from "fs"
 import * as path from "path"
-import { generateUniversalPdf } from "../index"
+import { generatePrescriptionPdf } from "../index"
 
 async function runTest() {
     console.log("🚀 Starting PDF Generation Test...")
@@ -428,7 +428,7 @@ async function runTest() {
     }
 
     try {
-        const pdfBuffer = await generateUniversalPdf()
+        const pdfBuffer = await generatePrescriptionPdf(testData as any)
 
         // Ensure output directory exists
         const outputDir = path.join(__dirname, "./output")

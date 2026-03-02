@@ -1,15 +1,8 @@
 import { TDocumentDefinitions } from "pdfmake/interfaces"
-import { IPrescriptionConfig } from "../../models/prescription-config.model"
-import { IPrescription } from "../../models/prescription.model"
+import { IGeneratePrescription } from "../../models/generate-prescription.model"
 import { getDoctorClinicSection } from "./doctor-clinic"
 
-export const buildPrescriptionDefinition = (data: {
-    datetime: string
-    prescription: IPrescription
-    prescriptionConfig: IPrescriptionConfig
-    isPsychologist: boolean
-    isBracEmployee: boolean
-}): TDocumentDefinitions => {
+export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocumentDefinitions => {
     const pConfig = data.prescriptionConfig
     const baseSize = pConfig.baseFontSize || 12
 
