@@ -36,41 +36,59 @@ export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocum
             color: "#334155" // slate-700 equivalent
         },
         content: [
-            // Only Doctor/Clinic section for now
             getDoctorClinicSection(data, baseSize),
             getPatientSection(data, baseSize),
-            // The Main 5/7 Grid
+
+            // The Main 5/7 Grid using a Table for the Vertical Line
             {
-                columnGap: 20,
-                columns: [
-                    // Left Column (col-span-5)
-                    {
-                        width: "41.6%", // (5/12 * 100)
-                        stack: [
-                            getPatientAreaSection(data, baseSize),
-                            getChiefComplaintSection(data, baseSize),
-                            getHistorySection(data, baseSize),
-                            getOnExaminationSection(data, baseSize),
-                            getDistressLevelsSection(data, baseSize),
-                            getFindingsSection(data, baseSize),
-                            getDiagnosisSection(data, baseSize),
-                            getInvestigationSection(data, baseSize)
+                marginTop: 10,
+                table: {
+                    // 41.6% for Left, 58.4% for Right
+                    widths: ["40%", "60%"],
+                    headerRows: 0,
+                    body: [
+                        [
+                            // LEFT COLUMN
+                            {
+                                stack: [
+                                    getPatientAreaSection(data, baseSize),
+                                    getChiefComplaintSection(data, baseSize),
+                                    getHistorySection(data, baseSize),
+                                    getOnExaminationSection(data, baseSize),
+                                    getDistressLevelsSection(data, baseSize),
+                                    getFindingsSection(data, baseSize),
+                                    getDiagnosisSection(data, baseSize),
+                                    getInvestigationSection(data, baseSize)
+                                ]
+                            },
+                            // RIGHT COLUMN
+                            {
+                                stack: [
+                                    getMedicineSection(data, baseSize),
+                                    getWellBeingSection(data, baseSize),
+                                    getTreatmentPlanSection(data, baseSize),
+                                    getAdviceSection(data, baseSize),
+                                    getEscalationSection(data, baseSize),
+                                    getFollowupSection(data, baseSize),
+                                    getReferredToSection(data, baseSize)
+                                ]
+                            }
                         ]
-                    },
-                    // Right Column (col-span-7)
-                    {
-                        width: "58.4%", // (7/12 * 100)
-                        stack: [
-                            getMedicineSection(data, baseSize),
-                            getWellBeingSection(data, baseSize),
-                            getTreatmentPlanSection(data, baseSize),
-                            getAdviceSection(data, baseSize),
-                            getEscalationSection(data, baseSize),
-                            getFollowupSection(data, baseSize),
-                            getReferredToSection(data, baseSize)
-                        ]
-                    }
-                ]
+                    ]
+                },
+                layout: {
+                    // Remove all horizontal lines
+                    hLineWidth: () => 0,
+                    // Only show a vertical line between the two columns (index 1)
+                    vLineWidth: (i) => (i === 1 ? 0.5 : 0),
+                    vLineColor: () => "#cbd5e1", // Light slate gray
+                    // Only add padding to the right of the first column
+                    paddingRight: (i) => (i === 0 ? 30 : 0),
+                    // Only add padding to the left of the second column
+                    paddingLeft: (i) => (i === 1 ? 30 : 0),
+                    paddingTop: () => 0,
+                    paddingBottom: () => 0
+                }
             }
         ],
         styles: {
@@ -107,6 +125,17 @@ export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocum
             medicineSubText: {
                 fontSize: baseSize * 0.9, // text-sm
                 color: "#4b5563" // gray-600 (dark-light)
+            },
+            sectionHeaderBlack: {
+                fontSize: baseSize * 1.25, // text-xl
+                color: "#000000",
+                bold: true,
+                marginBottom: 5
+            },
+            italicNote: {
+                fontSize: baseSize * 0.85, // text-sm
+                italics: true,
+                color: "#64748b" // dark
             }
         }
     }

@@ -126,7 +126,7 @@ async function runTest() {
             hideGender: false,
             treatmentPlanListStyle: "NUMBER",
             diagnosisListStyle: "BULLET_POINT",
-            baseFontSize: 16
+            baseFontSize: 12
         }
     }
 

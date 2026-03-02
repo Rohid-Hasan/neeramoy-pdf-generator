@@ -112,20 +112,6 @@ export const getDoctorClinicSection = (
                         ]
                     }
                 ]
-            },
-            // The Horizontal Line (Canvas)
-            {
-                canvas: [
-                    {
-                        type: "line",
-                        x1: 0,
-                        y1: 10,
-                        x2: 515,
-                        y2: 10,
-                        lineWidth: 0.5,
-                        lineColor: "#cbd5e1"
-                    }
-                ] as const // <--- Crucial for the "line" type error
             }
         ],
         marginBottom: 10

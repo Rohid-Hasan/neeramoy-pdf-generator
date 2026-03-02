@@ -50,7 +50,7 @@ export const getPatientSection = (data: IGeneratePrescription, baseSize: number)
     gridItems.push({
         text: [
             { text: "ID: ", style: "label" },
-            { text: "Patient_SHORT_ID", style: "value" }
+            { text: data.prescription.Patient.Id.split("-")[4], style: "value" }
         ]
     })
 
@@ -92,17 +92,17 @@ export const getPatientSection = (data: IGeneratePrescription, baseSize: number)
     }
 
     return {
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop: 5,
+        marginBottom: 5,
         table: {
             widths: ["*", "*", "*", "*"], // grid-cols-4
             body: rows
         },
         layout: {
             // Equivalent to border-b border-slate-700
-            hLineWidth: (i, node) => (i === node.table.body.length ? 1 : 0),
+            hLineWidth: (i, node) => (i === node.table.body.length - 1 ? 0 : 0.5),
             vLineWidth: () => 0,
-            hLineColor: "#334155", // slate-700
+            hLineColor: "#cbd5e1", // slate-700
             paddingTop: () => 5,
             paddingBottom: () => 5
         }

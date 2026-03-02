@@ -1,4 +1,5 @@
 import { Content } from "pdfmake/interfaces"
+import { PrescriptionVersionEnum } from "../../enums/prescription.enum"
 import { IGeneratePrescription } from "../../models/generate-prescription.model"
 import { EPrescriptionListStyle } from "../../models/prescription.model"
 import { PrescriptionUtil } from "../../utilities/prescription.util"
@@ -31,27 +32,29 @@ export const getMedicineSection = (data: IGeneratePrescription, baseSize: number
         const middleLine: any[] = []
 
         // Dose & Schedule logic (V2)
-        if (med.doseAmount) {
-            middleLine.push({
-                text: `${util.fractionalTemplate(med.doseAmount) || ""} ${med.doseType || ""} `
-            })
-        }
+        if (prescription.Version == PrescriptionVersionEnum.V2) {
+            if (med.doseAmount) {
+                middleLine.push({
+                    text: `${util.fractionalTemplate(med.doseAmount) || ""} ${med.doseType || ""} `
+                })
+            }
 
-        if (med.doseAmount && med.schedule) {
-            middleLine.push({ text: "x ", color: "#94a3b8" })
-        }
+            if (med.doseAmount && med.schedule) {
+                middleLine.push({ text: "x ", color: "#94a3b8" })
+            }
 
-        if (med.schedule) {
-            middleLine.push({
-                text: `${util.fractionalTemplate(med.schedule) || ""} ${med.scheduleType || ""}`
-            })
-        }
-
-        // Handle Schedules (Non-V2 / Legacy)
-        if (med.schedules) {
-            middleLine.push({
-                text: `${util.parseSchedules(med.schedules) || ""} ${med.doseType ? "(" + med.doseType + ")" : ""}`
-            })
+            if (med.schedule) {
+                middleLine.push({
+                    text: `${util.fractionalTemplate(med.schedule) || ""} ${med.scheduleType || ""}`
+                })
+            }
+        } else {
+            //v3
+            if (med.schedules) {
+                middleLine.push({
+                    text: `${util.parseSchedules(med.schedules) || ""} ${med.doseType ? "(" + med.doseType + ")" : ""}`
+                })
+            }
         }
 
         // Remark
