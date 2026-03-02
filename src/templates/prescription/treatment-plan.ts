@@ -25,7 +25,7 @@ export const getTreatmentPlanSection = (data: IGeneratePrescription, baseSize: n
                 ? {
                       text: item.note,
                       style: "subNote",
-                      margin: [0, 2, 0, 0]
+                      margin: [0, baseSize * 0.15, 0, 0]
                   }
                 : undefined
         ].filter(Boolean)
@@ -34,14 +34,14 @@ export const getTreatmentPlanSection = (data: IGeneratePrescription, baseSize: n
     })
 
     const section: any = {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
             !pConfig.hideTreatmentPlanTitle
                 ? { text: pConfig.treatmentPlanTitle, style: "sectionHeaderBlack" }
                 : undefined,
             pConfig.treatmentPlanListStyle === EPrescriptionListStyle.NUMBER
-                ? { ol: listItems, margin: [0, 5, 0, 0] }
-                : { ul: listItems, margin: [0, 5, 0, 0] }
+                ? { ol: listItems, margin: [0, baseSize * 0.4, 0, 0] }
+                : { ul: listItems, margin: [0, baseSize * 0.4, 0, 0] }
         ].filter(Boolean)
     }
 

@@ -25,8 +25,8 @@ export const getInvestigationSection = (data: IGeneratePrescription, baseSize: n
             itemStack.push({
                 text: [{ text: "Result: ", bold: true }, { text: item.result }],
                 style: "subNote",
-                marginLeft: 5,
-                marginTop: 2
+                marginLeft: baseSize * 0.4,
+                marginTop: baseSize * 0.15
             })
         }
 
@@ -35,14 +35,14 @@ export const getInvestigationSection = (data: IGeneratePrescription, baseSize: n
 
     // Use a clean Content object return
     const sectionContent: any = {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
             !pConfig.hideInvestigationTitle
                 ? { text: pConfig.investigationTitle, style: "sectionHeaderBlack" }
                 : undefined,
             pConfig.investigationListStyle === EPrescriptionListStyle.NUMBER
-                ? { ol: listItems, margin: [0, 5, 0, 0] }
-                : { ul: listItems, margin: [0, 5, 0, 0] }
+                ? { ol: listItems, margin: [0, baseSize * 0.4, 0, 0] }
+                : { ul: listItems, margin: [0, baseSize * 0.4, 0, 0] }
         ].filter(Boolean)
     }
 

@@ -32,12 +32,12 @@ export const getEscalationSection = (data: IGeneratePrescription, baseSize: numb
 
     // 2. Wrap in a typed object to bypass 'ContentAttachment' errors
     const section: any = {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
             { text: "Escalation", style: "sectionHeader" },
             {
                 ul: listItems,
-                margin: [0, 5, 0, 0]
+                margin: [0, baseSize * 0.4, 0, 0]
             }
         ].filter(Boolean)
     }

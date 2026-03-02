@@ -92,8 +92,8 @@ export const getPatientSection = (data: IGeneratePrescription, baseSize: number)
     }
 
     return {
-        marginTop: 5,
-        marginBottom: 5,
+        marginTop: baseSize * 0.4,
+        marginBottom: baseSize * 0.4,
         table: {
             widths: ["*", "*", "*", "*"], // grid-cols-4
             body: rows
@@ -103,8 +103,8 @@ export const getPatientSection = (data: IGeneratePrescription, baseSize: number)
             hLineWidth: (i, node) => (i === node.table.body.length - 1 ? 0 : 0.5),
             vLineWidth: () => 0,
             hLineColor: "#cbd5e1", // slate-700
-            paddingTop: () => 5,
-            paddingBottom: () => 5
+            paddingTop: () => baseSize * 0.4,
+            paddingBottom: () => baseSize * 0.4
         }
     }
 }

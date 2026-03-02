@@ -18,8 +18,8 @@ export const getFindingsSection = (data: IGeneratePrescription, baseSize: number
             noteContent = {
                 text: [item.query ? { text: "Query: ", bold: true } : "", { text: item.note }],
                 style: "subNote",
-                marginLeft: 5, // Matching your ms-5
-                marginTop: 2,
+                marginLeft: baseSize * 0.4,
+                marginTop: baseSize * 0.15,
                 preserveLeadingSpaces: true // Equivalent to whitespace-pre-line
             }
         }
@@ -30,12 +30,12 @@ export const getFindingsSection = (data: IGeneratePrescription, baseSize: number
     })
 
     return {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
             !pConfig.hideFindingsTitle ? { text: pConfig.findingsTitle, style: "sectionHeaderBlack" } : "",
             pConfig.findingsListStyle === EPrescriptionListStyle.NUMBER
-                ? { ol: listItems, margin: [0, 5, 0, 0] }
-                : { ul: listItems, margin: [0, 5, 0, 0] }
+                ? { ol: listItems, margin: [0, baseSize * 0.4, 0, 0] }
+                : { ul: listItems, margin: [0, baseSize * 0.4, 0, 0] }
         ]
     }
 }

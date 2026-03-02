@@ -29,12 +29,12 @@ export const getPatientAreaSection = (data: IGeneratePrescription, baseSize: num
 
     // 3. Return the section (Matching the structure of your other modules)
     const section: Content = {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
             { text: "Client Area", style: "sectionHeader" },
             {
                 ul: listItems,
-                margin: [0, 5, 0, 0]
+                margin: [0, baseSize * 0.4, 0, 0]
             }
         ]
     }
