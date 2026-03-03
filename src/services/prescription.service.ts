@@ -22,6 +22,7 @@ export const generatePrescriptionPdf = async (data: IGeneratePrescription) => {
     const popReg = getRawBase64("poppins-regular")
     const popBold = getRawBase64("poppins-bold")
     const popItalic = getRawBase64("poppins-italic")
+    const notoSansBengali = getRawBase64("font-noto-sans-bengali")
 
     // 1. Add to Virtual File System
     pdfMake.addVirtualFileSystem({
@@ -29,7 +30,8 @@ export const generatePrescriptionPdf = async (data: IGeneratePrescription) => {
         "AnekBangla.ttf": anekBase,
         "Poppins-Regular.ttf": popReg,
         "Poppins-Bold.ttf": popBold,
-        "Poppins-Italic.ttf": popItalic
+        "Poppins-Italic.ttf": popItalic,
+        "NotoSansBengali.ttf": notoSansBengali
     })
 
     // 2. Map the font names
@@ -51,6 +53,12 @@ export const generatePrescriptionPdf = async (data: IGeneratePrescription) => {
             bold: "Poppins-Bold.ttf",
             italics: "Poppins-Italic.ttf",
             bolditalics: "Poppins-Bold.ttf" // Fallback to bold if BoldItalic is missing
+        },
+        NotoSansBengali: {
+            normal: "NotoSansBengali.ttf",
+            bold: "NotoSansBengali.ttf",
+            italics: "NotoSansBengali.ttf",
+            bolditalics: "NotoSansBengali.ttf"
         }
     }
 

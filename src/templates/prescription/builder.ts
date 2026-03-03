@@ -8,6 +8,7 @@ import { getDoctorClinicSection } from "./doctor-clinic"
 import { getEscalationSection } from "./escalation"
 import { getFindingsSection } from "./findings"
 import { getFollowupSection } from "./follow-up"
+import { getFooterSection } from "./footer"
 import { getHistorySection } from "./history"
 import { getInvestigationSection } from "./investigation"
 import { getMedicineSection } from "./medicine"
@@ -31,10 +32,11 @@ export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocum
             (pConfig.margin?.bottom || 1) * 28.35
         ],
         defaultStyle: {
-            font: "Poppins",
+            font: "NotoSansBengali",
             fontSize: baseSize,
             color: "#334155" // slate-700 equivalent
         },
+        footer: getFooterSection(data, baseSize),
         content: [
             getDoctorClinicSection(data, baseSize),
             getPatientSection(data, baseSize),
@@ -130,12 +132,23 @@ export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocum
                 fontSize: baseSize * 1.25, // text-xl
                 color: "#000000",
                 bold: true,
-                marginBottom: 5
+                marginBottom: 5,
+                font: "Poppins"
             },
             italicNote: {
                 fontSize: baseSize * 0.85, // text-sm
                 italics: true,
                 color: "#64748b" // dark
+            },
+            footerNote: {
+                fontSize: baseSize * 0.65,
+                color: "#135556",
+                alignment: "center"
+            },
+            signatureText: {
+                font: "Poppins",
+                fontSize: 16,
+                color: "#135556"
             }
         }
     }

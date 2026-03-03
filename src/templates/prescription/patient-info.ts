@@ -102,12 +102,20 @@ export const getPatientSection = (data: IGeneratePrescription, baseSize: number)
             body: rows
         },
         layout: {
-            // Equivalent to border-b border-slate-700
-            hLineWidth: (i, node) => (i === node.table.body.length - 1 ? 0 : 0.5),
+            hLineWidth: (i, node) => {
+                // i === 0 is the TOP line
+                // i === node.table.body.length is the BOTTOM line
+                if (i === 0 || i === node.table.body.length) {
+                    return 1 // Solid border for top and bottom
+                }
+                return 0 // Remove lines between rows (inner grid lines)
+            },
             vLineWidth: () => 0,
-            hLineColor: "#cbd5e1", // slate-700
-            paddingTop: () => 0,
-            paddingBottom: () => 0
+            hLineColor: (i, node) => {
+                return "#cbd5e1" // slate-300 (standard for slate-700 look in PDF)
+            },
+            paddingTop: () => 4, // Added slight padding so text doesn't
+            paddingBottom: () => 4 // touch the new borders
         }
     }
 }

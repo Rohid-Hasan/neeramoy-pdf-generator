@@ -25,15 +25,11 @@ function getAssets() {
     const assetData = {}
 
     // 1. Regular Images
-    const images = ["neeramoy-qr.png", "logo-mini.svg", "bullet-point.svg"]
+    const images = ["neeramoy-qr.png", "logo-mini.png"]
     images.forEach((asset) => {
         const filePath = path.join(assetsDir, asset)
         if (fs.existsSync(filePath)) {
-            const ext = path.extname(asset).substring(1)
-            const prefix =
-                ext === "svg"
-                    ? "data:image/svg+xml;base64,"
-                    : "data:image/png;base64,"
+            const prefix = "data:image/png;base64,"
             assetData[asset] =
                 prefix + fs.readFileSync(filePath).toString("base64")
         }
@@ -47,7 +43,11 @@ function getAssets() {
         },
         { key: "poppins-regular", path: "fonts/Poppins/Poppins-Regular.ttf" },
         { key: "poppins-bold", path: "fonts/Poppins/Poppins-Bold.ttf" },
-        { key: "poppins-italic", path: "fonts/Poppins/Poppins-Italic.ttf" }
+        { key: "poppins-italic", path: "fonts/Poppins/Poppins-Italic.ttf" },
+        {
+            key: "font-noto-sans-bengali",
+            path: "fonts/Noto_Sans_Bengali/NotoSansBengali-VariableFont_wdth,wght.ttf"
+        }
     ]
 
     fontsToLoad.forEach((font) => {

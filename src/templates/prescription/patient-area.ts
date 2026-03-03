@@ -6,7 +6,6 @@ export const getPatientAreaSection = (data: IGeneratePrescription, baseSize: num
 
     // 1. Strict null check to prevent empty containers from adding margin
     if (!area || (!area.division && !area.district && !area.upazila && !area.details)) {
-        console.log("I am here")
         return ""
     }
 
