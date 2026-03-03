@@ -80,7 +80,7 @@ export const getOnExaminationSection = (data: IGeneratePrescription, baseSize: n
     }
 
     return {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
             !pConfig.hideOnExaminationTitle
                 ? { text: pConfig.onExaminationTitle, style: "sectionHeaderBlack" }

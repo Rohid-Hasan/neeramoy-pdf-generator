@@ -38,9 +38,9 @@ export const getWellBeingSection = (data: IGeneratePrescription, baseSize: numbe
 
     // 2. Wrap the final result in a variable and cast to any before returning as Content
     const section: any = {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
-            { text: "Wellbeing Scale Score", style: "sectionHeader" },
+            { text: "Wellbeing Scale Score", style: "sectionHeaderBlack" },
             {
                 ul: listItems,
                 margin: [0, 5, 0, 0]

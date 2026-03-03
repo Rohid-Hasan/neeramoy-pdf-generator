@@ -34,7 +34,7 @@ export const getDistressLevelsSection = (data: IGeneratePrescription, baseSize: 
     return {
         marginTop: baseSize * 0.6,
         stack: [
-            { text: "Distress Level", style: "sectionHeader" },
+            { text: "Distress Level", style: "sectionHeaderBlack" },
             {
                 ul: listItems,
                 margin: [0, baseSize * 0.4, 0, 0]

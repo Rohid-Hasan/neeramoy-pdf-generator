@@ -18,7 +18,7 @@ export const getAdviceSection = (data: IGeneratePrescription, baseSize: number):
     })
 
     const section: any = {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
             !pConfig.hideAdviceTitle ? { text: pConfig.adviceTitle, style: "sectionHeaderBlack" } : undefined,
             pConfig.adviceListStyle === EPrescriptionListStyle.NUMBER

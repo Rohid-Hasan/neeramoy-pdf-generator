@@ -27,7 +27,7 @@ export const getHistorySection = (data: IGeneratePrescription, baseSize: number)
     })
 
     return {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
             !pConfig.hideHistoryTitle ? { text: pConfig.historyTitle, style: "sectionHeaderBlack" } : "",
             pConfig.historyListStyle === EPrescriptionListStyle.NUMBER ? { ol: listItems } : { ul: listItems }

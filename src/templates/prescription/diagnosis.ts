@@ -35,7 +35,7 @@ export const getDiagnosisSection = (data: IGeneratePrescription, baseSize: numbe
     })
 
     return {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
             !pConfig.hideDiagnosisTitle ? { text: pConfig.diagnosisTitle, style: "sectionHeaderBlack" } : "",
             pConfig.diagnosisListStyle === EPrescriptionListStyle.NUMBER

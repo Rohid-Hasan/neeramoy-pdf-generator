@@ -31,7 +31,7 @@ export const getReferredToSection = (data: IGeneratePrescription, baseSize: numb
 
     // 3. Return section with casting to bypass 'ContentAttachment' error
     const section: any = {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
             { text: "Referred To", style: "sectionHeaderBlack" },
             {

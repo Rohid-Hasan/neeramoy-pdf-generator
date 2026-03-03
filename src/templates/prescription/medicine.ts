@@ -106,7 +106,7 @@ export const getMedicineSection = (data: IGeneratePrescription, baseSize: number
     }
 
     return {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
             !pConfig.hideMedicineTitle ? { text: pConfig.medicineTitle, style: "sectionHeaderBlack" } : "",
             // Use built-in list logic to handle Bullets/Numbers automatically

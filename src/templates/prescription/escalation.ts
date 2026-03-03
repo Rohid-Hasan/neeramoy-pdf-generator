@@ -34,7 +34,7 @@ export const getEscalationSection = (data: IGeneratePrescription, baseSize: numb
     const section: any = {
         marginTop: baseSize * 0.6,
         stack: [
-            { text: "Escalation", style: "sectionHeader" },
+            { text: "Escalation", style: "sectionHeaderBlack" },
             {
                 ul: listItems,
                 margin: [0, baseSize * 0.4, 0, 0]

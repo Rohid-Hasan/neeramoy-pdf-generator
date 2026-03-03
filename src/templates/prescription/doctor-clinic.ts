@@ -42,12 +42,14 @@ export const getDoctorClinicSection = (
                                 text: prescription.Doctor.Name,
                                 fontSize: baseSize * 1.2,
                                 color: "#357a7b",
-                                bold: true
+                                bold: true,
+                                font: "Poppins"
                             },
                             {
                                 text: formattedQualifications,
                                 fontSize: baseSize * 0.85,
-                                margin: [0, 0, 0, 2]
+                                margin: [0, 0, 0, 2],
+                                font: "Poppins"
                             },
                             // Conditionals must return an empty object {} or null if not present
                             prescription.Doctor.Title || prescription.Doctor.Specialties
@@ -57,14 +59,16 @@ export const getDoctorClinicSection = (
                                               ? {
                                                     text: prescription.Doctor.Title,
                                                     color: "#357a7b",
-                                                    bold: true
+                                                    bold: true,
+                                                    font: "Poppins"
                                                 }
                                               : [],
                                           formattedSpecialties
                                               ? {
                                                     text: formattedSpecialties,
                                                     color: "#357a7b",
-                                                    bold: true
+                                                    bold: true,
+                                                    font: "Poppins"
                                                 }
                                               : []
                                       ]
@@ -73,13 +77,14 @@ export const getDoctorClinicSection = (
                             {
                                 text: prescription.Doctor.Address,
                                 fontSize: baseSize * 0.85,
-                                color: "#64748b"
+                                color: "#64748b",
+                                font: "Poppins"
                             },
                             prescription.Doctor.BMDC
                                 ? {
                                       text: [
-                                          { text: "BMDC: ", fontSize: baseSize * 0.85 },
-                                          { text: prescription.Doctor.BMDC, bold: true }
+                                          { text: "BMDC: ", fontSize: baseSize * 0.85, font: "Poppins" },
+                                          { text: prescription.Doctor.BMDC, bold: true, font: "Poppins" }
                                       ],
                                       margin: [0, 5, 0, 0]
                                   }
@@ -98,12 +103,14 @@ export const getDoctorClinicSection = (
                                               text: prescription.Clinic.Name || "",
                                               fontSize: baseSize * 1.2,
                                               bold: true,
-                                              color: "#357a7b"
+                                              color: "#357a7b",
+                                              font: "Poppins"
                                           },
                                           {
                                               text: prescription.Clinic.Address || "",
                                               fontSize: baseSize * 0.85,
-                                              color: "#64748b"
+                                              color: "#64748b",
+                                              font: "Poppins"
                                           }
                                       ],
                                       marginBottom: 10
@@ -111,14 +118,14 @@ export const getDoctorClinicSection = (
                                 : [],
                             {
                                 text: [
-                                    { text: "Date: ", fontSize: baseSize * 0.85 },
-                                    { text: util.getDate(data.datetime), color: "#000000" }
+                                    { text: "Date: ", fontSize: baseSize * 0.85, font: "Poppins" },
+                                    { text: util.getDate(data.datetime), color: "#000000", font: "Poppins" }
                                 ]
                             },
                             {
                                 text: [
-                                    { text: "Time: ", fontSize: baseSize * 0.85 },
-                                    { text: util.getTime(data.datetime), color: "#000000" }
+                                    { text: "Time: ", fontSize: baseSize * 0.85, font: "Poppins" },
+                                    { text: util.getTime(data.datetime), color: "#000000", font: "Poppins" }
                                 ]
                             }
                         ]

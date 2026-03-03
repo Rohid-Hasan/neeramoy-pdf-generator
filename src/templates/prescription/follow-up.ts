@@ -18,7 +18,7 @@ export const getFollowupSection = (data: IGeneratePrescription, baseSize: number
     })
 
     const section: any = {
-        marginTop: 15,
+        marginTop: baseSize * 0.6,
         stack: [
             // Section Title (e.g., "Follow-up")
             !pConfig.hideFollowupTitle

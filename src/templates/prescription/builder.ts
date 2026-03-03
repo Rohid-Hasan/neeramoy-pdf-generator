@@ -53,26 +53,30 @@ export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocum
                             // LEFT COLUMN
                             {
                                 stack: [
-                                    getPatientAreaSection(data, baseSize),
-                                    getChiefComplaintSection(data, baseSize),
-                                    getHistorySection(data, baseSize),
-                                    getOnExaminationSection(data, baseSize),
-                                    getDistressLevelsSection(data, baseSize),
-                                    getFindingsSection(data, baseSize),
-                                    getDiagnosisSection(data, baseSize),
-                                    getInvestigationSection(data, baseSize)
+                                    ...[
+                                        getPatientAreaSection(data, baseSize),
+                                        getChiefComplaintSection(data, baseSize),
+                                        getHistorySection(data, baseSize),
+                                        getOnExaminationSection(data, baseSize),
+                                        getDistressLevelsSection(data, baseSize),
+                                        getFindingsSection(data, baseSize),
+                                        getDiagnosisSection(data, baseSize),
+                                        getInvestigationSection(data, baseSize)
+                                    ].filter((section) => section && section !== "")
                                 ]
                             },
                             // RIGHT COLUMN
                             {
                                 stack: [
-                                    getMedicineSection(data, baseSize),
-                                    getWellBeingSection(data, baseSize),
-                                    getTreatmentPlanSection(data, baseSize),
-                                    getAdviceSection(data, baseSize),
-                                    getEscalationSection(data, baseSize),
-                                    getFollowupSection(data, baseSize),
-                                    getReferredToSection(data, baseSize)
+                                    ...[
+                                        getMedicineSection(data, baseSize),
+                                        getWellBeingSection(data, baseSize),
+                                        getTreatmentPlanSection(data, baseSize),
+                                        getAdviceSection(data, baseSize),
+                                        getEscalationSection(data, baseSize),
+                                        getFollowupSection(data, baseSize),
+                                        getReferredToSection(data, baseSize)
+                                    ].filter((section) => section && section !== "")
                                 ]
                             }
                         ]
@@ -98,12 +102,6 @@ export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocum
             secondaryText: { color: "#64748b", fontSize: baseSize * 0.85 },
             label: { color: "#334155", bold: true, fontSize: baseSize }, // dark-light font-medium
             value: { color: "#475569", bold: false, fontSize: baseSize }, // dart-mid-dark font-normal
-            sectionHeader: {
-                fontSize: baseSize * 1.25, // text-xl
-                color: "#357a7b",
-                bold: true,
-                marginBottom: 5
-            },
             labelBold: {
                 fontSize: baseSize,
                 color: "#1f2937", // neutral-800
