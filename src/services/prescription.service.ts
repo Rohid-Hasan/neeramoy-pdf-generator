@@ -1,88 +1,75 @@
-import * as ejs from "ejs"
-import { IPrescriptionConfig } from "../models/prescription-config.model"
-import { IMedicine, IPrescription } from "../models/prescription.model"
-import { ModifyMedicineType, PrescriptionUtil } from "../utilities/prescription.util"
-import { ASSET_REGISTRY, TEMPLATE_REGISTRY } from "../views/template-registry"
+import * as pdfMakeModule from "pdfmake/build/pdfmake"
+import * as pdfFontsModule from "pdfmake/build/vfs_fonts"
+import { TDocumentDefinitions, TFontDictionary } from "pdfmake/interfaces"
+import { IGeneratePrescription } from "../models/generate-prescription.model"
+import { buildPrescriptionDefinition } from "../templates/prescription/builder"
+import { ASSET_REGISTRY } from "../views/template-registry"
 
-export const generatePrescriptionPDF = async (body: {
-    datetime: string
-    prescription: IPrescription
-    prescriptionConfig: IPrescriptionConfig
-    isPsychologist: boolean
-    isBracEmployee: boolean
-}) => {
-    const prescription: any = body.prescription
+/** * Type-safe casting: We tell TS that our interop object
+ * matches the official pdfmake interface.
+ */
+const pdfMake = ((pdfMakeModule as any).default || pdfMakeModule) as typeof import("pdfmake")
 
-    // 1. Medicine & Schedule Transformation
-    prescription.MedicineTag?.items?.forEach((el: IMedicine) => {
-        if (el.type) {
-            el.type = ModifyMedicineType(el.type)
-        }
+// Clean VFS extraction
+const vfs = (pdfFontsModule as any).pdfMake?.vfs || (pdfFontsModule as any).vfs
+pdfMake.addVirtualFileSystem(vfs)
+
+export const generatePrescriptionPdf = async (data: IGeneratePrescription) => {
+    // Helper to strip prefix
+    const getRawBase64 = (key: string) => ASSET_REGISTRY[key]?.split(",")[1]
+
+    const anekBase = getRawBase64("font-anek-bangla")
+    const popReg = getRawBase64("poppins-regular")
+    const popBold = getRawBase64("poppins-bold")
+    const popItalic = getRawBase64("poppins-italic")
+    const notoSansBengali = getRawBase64("font-noto-sans-bengali")
+
+    // 1. Add to Virtual File System
+    pdfMake.addVirtualFileSystem({
+        ...vfs,
+        "AnekBangla.ttf": anekBase,
+        "Poppins-Regular.ttf": popReg,
+        "Poppins-Bold.ttf": popBold,
+        "Poppins-Italic.ttf": popItalic,
+        "NotoSansBengali.ttf": notoSansBengali
     })
 
-    const util = new PrescriptionUtil()
-    for (const med of prescription.MedicineTag?.items || []) {
-        med["parseSchedules"] = util.parseSchedules(med.schedules)
-        med["fractionalTemplateQuantity"] = util.fractionalTemplate(med.quantity)
-        med["fractionalTemplateDoseAmount"] = util.fractionalTemplate(med.doseAmount)
-        med["fractionalTemplateSchedule"] = util.fractionalTemplate(med.schedule)
-        med["fractionalTemplateDuration"] = util.fractionalTemplate(med.duration)
-    }
-
-    // 2. Examination & Metadata
-    prescription.date = util.getDate(body.datetime)
-    prescription.time = util.getTime(body.datetime)
-    prescription.OnExaminationKeys = util.getKeysOfOnExamination(prescription)
-    prescription.OnExaminationEnum = {}
-    for (const key of prescription.OnExaminationKeys) {
-        prescription.OnExaminationEnum[key] = util.getShortNameOfOnExaminationAttribute(key)
-    }
-
-    // 3. Enums & Config
-    const PrescriptionItemListStyleEnum = { NUMBER: "NUMBER", BULLET_POINT: "BULLET_POINT", NONE: "NONE" }
-    const SignatureTypeEnum = { URL: "URL", TEXT: "TEXT", NOTE: "NOTE" }
-    const PrescriptionVersionEnum = { V2: "v2-desktop", V3: "v3-desktop" }
-
-    const pConfig = body.prescriptionConfig
-    // Default Base Font Size if not provided
-    if (!pConfig.baseFontSize) {
-        pConfig.baseFontSize = 12
-    }
-
-    const mainTemplate = TEMPLATE_REGISTRY["prescription-pdf.ejs"]
-
-    const options = {
-        client: false,
-        includer: (originalPath: string) => {
-            const cleanName = originalPath.replace(/^\.\//, "").replace(/\.ejs$/, "") + ".ejs"
-            const template = TEMPLATE_REGISTRY[cleanName]
-            if (!template) {
-                console.warn(`⚠️ EJS Includer: [${cleanName}] not found in registry.`)
-                return { template: "" }
-            }
-            return { template }
+    // 2. Map the font names
+    const fonts: TFontDictionary = {
+        Roboto: {
+            normal: "Roboto-Regular.ttf",
+            bold: "Roboto-Medium.ttf",
+            italics: "Roboto-Italic.ttf",
+            bolditalics: "Roboto-MediumItalic.ttf"
+        },
+        AnekBangla: {
+            normal: "AnekBangla.ttf",
+            bold: "AnekBangla.ttf",
+            italics: "AnekBangla.ttf",
+            bolditalics: "AnekBangla.ttf"
+        },
+        Poppins: {
+            normal: "Poppins-Regular.ttf",
+            bold: "Poppins-Bold.ttf",
+            italics: "Poppins-Italic.ttf",
+            bolditalics: "Poppins-Bold.ttf" // Fallback to bold if BoldItalic is missing
+        },
+        NotoSansBengali: {
+            normal: "NotoSansBengali.ttf",
+            bold: "NotoSansBengali.ttf",
+            italics: "NotoSansBengali.ttf",
+            bolditalics: "NotoSansBengali.ttf"
         }
     }
 
-    // 4. Render HTML String
-    return ejs.render(
-        mainTemplate,
-        {
-            ...body,
-            // Pass the Base64 font string
-            fontAnekBangla: ASSET_REGISTRY["font-anek-bangla"],
+    pdfMake.addFonts(fonts)
 
-            image: ASSET_REGISTRY["neeramoy-qr.png"],
-            imageTwo: ASSET_REGISTRY["logo-mini.svg"],
-            imageThree: ASSET_REGISTRY["bullet-point.svg"],
-
-            prescription: prescription,
-            patientShortId: prescription.Patient?.Id?.split("-")[4] || "N/A",
-            pConfig: pConfig,
-            PILS: PrescriptionItemListStyleEnum,
-            SignatureType: SignatureTypeEnum,
-            isV2Prescription: prescription.Version === PrescriptionVersionEnum.V2
-        },
-        options
-    )
+    try {
+        const docDefinition: TDocumentDefinitions = buildPrescriptionDefinition(data)
+        const docGenerator = pdfMake.createPdf(docDefinition, {})
+        return await docGenerator.getBuffer()
+    } catch (error) {
+        console.error("❌ PDF Generation failed:", error)
+        throw error
+    }
 }

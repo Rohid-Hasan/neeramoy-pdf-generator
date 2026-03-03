@@ -25,33 +25,41 @@ function getAssets() {
     const assetData = {}
 
     // 1. Regular Images
-    const images = ["neeramoy-qr.png", "logo-mini.svg", "bullet-point.svg"]
+    const images = ["neeramoy-qr.png", "logo-mini.png"]
     images.forEach((asset) => {
         const filePath = path.join(assetsDir, asset)
         if (fs.existsSync(filePath)) {
-            const ext = path.extname(asset).substring(1)
-            const prefix =
-                ext === "svg"
-                    ? "data:image/svg+xml;base64,"
-                    : "data:image/png;base64,"
+            const prefix = "data:image/png;base64,"
             assetData[asset] =
                 prefix + fs.readFileSync(filePath).toString("base64")
         }
     })
 
-    // 2. Fonts (Variable Font)
-    const fontPath = path.join(
-        assetsDir,
-        "fonts/Anek_Bangla/AnekBangla-VariableFont_wdth,wght.ttf"
-    )
-    if (fs.existsSync(fontPath)) {
-        // We use a clean key for the font
-        assetData["font-anek-bangla"] =
-            "data:font/ttf;base64," +
-            fs.readFileSync(fontPath).toString("base64")
-    } else {
-        console.warn("⚠️ Font file not found at:", fontPath)
-    }
+    // 2. Fonts
+    const fontsToLoad = [
+        {
+            key: "font-anek-bangla",
+            path: "fonts/Anek_Bangla/AnekBangla-VariableFont_wdth,wght.ttf"
+        },
+        { key: "poppins-regular", path: "fonts/Poppins/Poppins-Regular.ttf" },
+        { key: "poppins-bold", path: "fonts/Poppins/Poppins-Bold.ttf" },
+        { key: "poppins-italic", path: "fonts/Poppins/Poppins-Italic.ttf" },
+        {
+            key: "font-noto-sans-bengali",
+            path: "fonts/Noto_Sans_Bengali/NotoSansBengali-VariableFont_wdth,wght.ttf"
+        }
+    ]
+
+    fontsToLoad.forEach((font) => {
+        const filePath = path.join(assetsDir, font.path)
+        if (fs.existsSync(filePath)) {
+            assetData[font.key] =
+                "data:font/ttf;base64," +
+                fs.readFileSync(filePath).toString("base64")
+        } else {
+            console.warn(`⚠️ Font file not found at: ${filePath}`)
+        }
+    })
 
     return assetData
 }

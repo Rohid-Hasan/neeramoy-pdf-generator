@@ -167,3 +167,15 @@ export interface IMedicine {
     remark: string
     note: string
 }
+
+// PrescriptionItemListStyleEnum
+export enum EPrescriptionListStyle {
+    NUMBER = "NUMBER",
+    BULLET_POINT = "BULLET_POINT",
+    NONE = "NONE"
+}
+export const SignatureTypeEnum = {
+    URL: "URL",
+    TEXT: "TEXT",
+    NOTE: "NOTE"
+}

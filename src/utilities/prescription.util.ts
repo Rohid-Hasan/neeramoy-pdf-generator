@@ -1,9 +1,9 @@
-import { parse, format } from "date-fns";
+import { format, parse } from "date-fns"
 
 export interface OnExaminationItem {
-    fullName: string;
-    shortName?: string;
-    modelAttributeName: string;
+    fullName: string
+    shortName?: string
+    modelAttributeName: string
 }
 
 export const OnExaminationEnum: OnExaminationItem[] = [
@@ -46,12 +46,12 @@ export const OnExaminationEnum: OnExaminationItem[] = [
     { fullName: "Special Note", modelAttributeName: "extraNote" },
     { fullName: "Lactating", modelAttributeName: "lactating" },
     { fullName: "Pregnancy", modelAttributeName: "pregnancy" }
-];
+]
 
 export class PrescriptionUtil {
-    private fractionMap: Map<number, string>;
+    private fractionMap: Map<number, string>
     // The format string matching your input: "YYYY-MM-DD-HH-mm-ss-SSS"
-    private readonly DATE_FORMAT_STR: string = "yyyy-MM-dd-HH-mm-ss-SSS";
+    private readonly DATE_FORMAT_STR: string = "yyyy-MM-dd-HH-mm-ss-SSS"
 
     constructor() {
         this.fractionMap = new Map([
@@ -65,126 +65,136 @@ export class PrescriptionUtil {
             [7, "৭"],
             [8, "৮"],
             [9, "৯"]
-        ]);
+        ])
     }
 
     getFraction = (decimal: number): { numerator: number; denominator: number } => {
-        let denominator = 1;
+        let denominator = 1
         for (denominator; (decimal * denominator) % 1 !== 0; denominator++);
-        return { numerator: decimal * denominator, denominator: denominator };
-    };
-
-    fractionalTemplate(value: number | string | undefined): string {
-        if (!value) return "";
-        let before = "";
-        let after = "";
-        const arr = value.toString().split(".");
-
-        if (arr[0] !== "0" && !!arr[0]) {
-            before = this.toBangla(arr[0]);
-        }
-
-        if (!!arr[1]) {
-            const fraction = this.getFraction(parseFloat(`0.${arr[1]}`));
-            after = `<sup>${this.toBangla(
-                fraction.numerator.toString()
-            )}</sup>/<sub>${this.toBangla(
-                fraction.denominator.toString()
-            )}</sub>`;
-        }
-        return "<span>" + before + after + "</span>";
+        return { numerator: decimal * denominator, denominator: denominator }
     }
 
     toBangla(str: string): string {
         return str
             .split("")
             .map((s) => this.fractionMap.get(+s) || s)
-            .join("");
+            .join("")
+    }
+
+    fractionalTemplate(value: number | string | undefined): string {
+        if (value === undefined || value === null || value === "") return ""
+
+        let before = ""
+        let after = ""
+        const arr = value.toString().split(".")
+
+        // Handle the whole number part
+        if (arr[0] !== "0" && !!arr[0]) {
+            before = this.toBangla(arr[0])
+        }
+
+        // Handle the decimal/fraction part
+        if (arr[1] && parseInt(arr[1]) > 0) {
+            const fraction = this.getFraction(parseFloat(`0.${arr[1]}`))
+
+            // In PDF, we use a standard numerator/denominator string.
+            // If "before" exists, we add a space or just keep them together.
+            const numerator = this.toBangla(fraction.numerator.toString())
+            const denominator = this.toBangla(fraction.denominator.toString())
+
+            after = `${numerator}/${denominator}`
+        }
+
+        // Return plain text instead of HTML spans
+        return before && after ? `${before} ${after}` : before || after
     }
 
     parseSchedules(schedules: string | undefined): string {
-        if (!schedules || !schedules.trim()) return "";
+        if (!schedules || !schedules.trim()) return ""
         try {
             const values = schedules.split("+").map((s) => {
-                const trimmed = s.trim();
-                if (parseFloat(trimmed) === 0) return "০";
-                else return this.fractionalTemplate(parseFloat(trimmed));
-            });
-            return values.join(" + ");
+                const trimmed = s.trim()
+                const numValue = parseFloat(trimmed)
+
+                if (isNaN(numValue)) return trimmed
+                if (numValue === 0) return "০"
+
+                // This now returns plain text like "১" or "১/২"
+                return this.fractionalTemplate(numValue)
+            })
+            return values.join(" + ")
         } catch (e) {
-            return schedules;
+            return schedules
         }
     }
 
     getTime(dateTime: string): string {
-        const dateObj = parse(dateTime, this.DATE_FORMAT_STR, new Date());
+        const dateObj = parse(dateTime, this.DATE_FORMAT_STR, new Date())
         // 'p' is the date-fns locale-aware time format (e.g., 12:00 PM)
-        return format(dateObj, "p");
+        return format(dateObj, "p")
     }
 
     getDate(dateTime: string): string {
-        const dateObj = parse(dateTime, this.DATE_FORMAT_STR, new Date());
+        const dateObj = parse(dateTime, this.DATE_FORMAT_STR, new Date())
         // 'd MMM, yyyy' matches your previous format (e.g., 26 Jan, 2026)
-        return format(dateObj, "d MMM, yyyy");
+        return format(dateObj, "d MMM, yyyy")
     }
 
     getKeysOfOnExamination(prescription: any): string[] {
         if (prescription?.OnExamination) {
-            const arr: string[] = [];
-            const keys = Object.keys(prescription.OnExamination);
+            const arr: string[] = []
+            const keys = Object.keys(prescription.OnExamination)
 
             for (const key of keys) {
                 if (prescription.OnExamination[key] && key !== "extraFields") {
-                    let pushFlag = false;
-                    const nestedKeys = Object.keys(prescription.OnExamination[key]);
+                    let pushFlag = false
+                    const nestedKeys = Object.keys(prescription.OnExamination[key])
 
                     for (const nestedKey of nestedKeys) {
-                        const val = prescription.OnExamination[key][nestedKey];
+                        const val = prescription.OnExamination[key][nestedKey]
                         if (val !== null && val !== undefined) {
-                            pushFlag = true;
-                            break; // Optimization: stop looking if we found a value
+                            pushFlag = true
+                            break // Optimization: stop looking if we found a value
                         }
                     }
                     if (pushFlag) {
-                        arr.push(key);
+                        arr.push(key)
                     }
                 }
             }
-            return arr;
+            return arr
         }
-        return [];
+        return []
     }
 
     getShortNameOfOnExaminationAttribute(modelAttributeName: string): string {
-        const item = OnExaminationEnum.find(
-            (el) => el.modelAttributeName === modelAttributeName
-        );
-        return item ? (item.shortName || item.fullName) : "";
+        const item = OnExaminationEnum.find((el) => el.modelAttributeName === modelAttributeName)
+        return item ? item.shortName || item.fullName : ""
     }
 }
 
 export const ModifyMedicineType = (type: string): string => {
-    const value = type.toLowerCase();
+    const value = type.toLowerCase()
     const mappings: Record<string, string> = {
-        "tablet": "Tab",
-        "capsule": "Cap",
-        "syrup": "Syr",
-        "injection": "Inj",
-        "solution": "Sol",
-        "gel": "Gel",
-        "cream": "Cream",
-        "ointment": "Oint",
-        "drops": "Drops",
-        "suspension": "Susp",
+        tablet: "Tab",
+        capsule: "Cap",
+        syrup: "Syr",
+        injection: "Inj",
+        solution: "Sol",
+        gel: "Gel",
+        cream: "Cream",
+        ointment: "Oint",
+        drops: "Drops",
+        suspension: "Susp",
         "sustained release": "SR",
         "slow release": "SR",
-        "topical": "Top",
-        "suppository": "Supp"
-    };
-
-    for (const key in mappings) {
-        if (value.includes(key)) return mappings[key];
+        topical: "Top",
+        suppository: "Supp"
     }
 
-    return value;
-};
+    for (const key in mappings) {
+        if (value.includes(key)) return mappings[key]
+    }
+
+    return value
+}
