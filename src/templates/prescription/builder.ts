@@ -127,7 +127,7 @@ export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocum
                 color: "#4b5563" // gray-600 (dark-light)
             },
             sectionHeaderBlack: {
-                fontSize: baseSize * 1.25, // text-xl
+                fontSize: baseSize, // text-xl
                 color: "#000000",
                 bold: true,
                 marginBottom: 5,

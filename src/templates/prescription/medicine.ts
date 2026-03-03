@@ -87,11 +87,9 @@ export const getMedicineSection = (data: IGeneratePrescription, baseSize: number
 
         // Build the medicine block
         return {
-            stack: [
-                { text: topLine, lineHeight: 1.2 },
-                { text: middleLine, style: "medicineSubText", marginTop: 2 },
-                noteLine
-            ].filter(Boolean),
+            stack: [{ text: topLine }, { text: middleLine, style: "medicineSubText" }, noteLine].filter(
+                Boolean
+            ),
             marginBottom: 12 // Equivalent to gap-4
         }
     })

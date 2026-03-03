@@ -298,7 +298,7 @@ async function runTest() {
                 Gender: "Male",
                 Address: "Uttara, Dhaka, Bangladesh",
                 Age: "24 years",
-                BloodGroup: ""
+                BloodGroup: "A+"
             },
             Version: "v3-desktop"
         },
