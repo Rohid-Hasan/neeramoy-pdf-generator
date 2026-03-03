@@ -6,6 +6,8 @@ import { ASSET_REGISTRY } from "../../views/template-registry"
 export const getFooterSection = (data: IGeneratePrescription, baseSize: number): DynamicContent => {
     return (currentPage: number, pageCount: number): Content => {
         const { prescriptionConfig: pConfig, isBracEmployee } = data
+        const leftDistance = (pConfig.margin?.left || 1) * 28.35
+        const rightDistance = (pConfig.margin?.right || 1) * 28.35
         const SignatureType = { NOTE: "NOTE", URL: "URL", TEXT: "TEXT" }
 
         let middleSection: Content = { text: "" }
@@ -49,37 +51,30 @@ export const getFooterSection = (data: IGeneratePrescription, baseSize: number):
         }
 
         return {
-            margin: [40, 0, 40, 10],
+            // [left, top, right, bottom]
+            // We apply the page's left/right margin so it aligns with the content
+            margin: [leftDistance, 0, rightDistance, 0],
             stack: [
                 {
                     columns: [
                         { width: "15%", text: "" },
-
                         {
-                            width: "60%",
+                            width: "60%", // Slightly reduced to give right side more room
                             stack: [middleSection],
                             alignment: "center"
                         },
-
-                        // *** NEW *** Right section with stretch space pushing it to right edge
                         {
                             width: "25%",
                             columns: [
-                                { width: "*", text: "" }, // stretchable spacer
-
-                                // Logo
+                                { width: "*", text: "" },
                                 {
                                     width: 25,
                                     image: ASSET_REGISTRY["logo-mini.png"],
                                     alignment: "right"
                                 },
-
-                                // Spacer
                                 { width: 6, text: "" },
-
-                                // Text stack
                                 {
-                                    width: "*",
+                                    width: "auto",
                                     stack: [
                                         {
                                             text: "neeramoy",
@@ -96,14 +91,9 @@ export const getFooterSection = (data: IGeneratePrescription, baseSize: number):
                                             alignment: "right",
                                             font: "Poppins"
                                         }
-                                    ],
-                                    alignment: "right"
+                                    ]
                                 },
-
-                                // Spacer
                                 { width: 8, text: "" },
-
-                                // QR
                                 {
                                     width: 20,
                                     image: ASSET_REGISTRY["neeramoy-qr.png"],
@@ -112,14 +102,6 @@ export const getFooterSection = (data: IGeneratePrescription, baseSize: number):
                             ]
                         }
                     ]
-                },
-
-                {
-                    text: `Page ${currentPage} of ${pageCount}`,
-                    alignment: "center",
-                    fontSize: 8,
-                    color: "#94a3b8",
-                    marginTop: 5
                 }
             ]
         }

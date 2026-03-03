@@ -29,7 +29,7 @@ export const buildPrescriptionDefinition = (data: IGeneratePrescription): TDocum
             (pConfig.margin?.left || 1) * 28.35, // cm to points
             (pConfig.margin?.top || 1) * 28.35,
             (pConfig.margin?.right || 1) * 28.35,
-            (pConfig.margin?.bottom || 1) * 28.35
+            ((pConfig.margin?.bottom || 1) + 0.5) * 28.35
         ],
         defaultStyle: {
             font: "NotoSansBengali",
