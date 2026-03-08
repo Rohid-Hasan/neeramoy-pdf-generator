@@ -1,5 +1,10 @@
-const fs = require("fs")
-const path = require("path")
+import fs from "fs"
+import path from "path"
+import { fileURLToPath } from "url"
+
+// Recreate __dirname for ESM
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const viewsDir = path.join(__dirname, "../src/views")
 const assetsDir = path.join(__dirname, "../src/assets")
@@ -45,6 +50,8 @@ function getAssets() {
 }
 
 const assets = getAssets()
+// Note: Ensure 'templates' is defined or imported if you use it here
+const templates = {}
 
 const tsContent = `
 export const TEMPLATE_REGISTRY: Record<string, string> = ${JSON.stringify(templates, null, 2)};
