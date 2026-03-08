@@ -5,22 +5,6 @@ const viewsDir = path.join(__dirname, "../src/views")
 const assetsDir = path.join(__dirname, "../src/assets")
 const outputFile = path.join(__dirname, "../src/views/template-registry.ts")
 
-function getFiles(dir, allFiles = {}) {
-    const files = fs.readdirSync(dir)
-    files.forEach((file) => {
-        const name = path.join(dir, file)
-        if (fs.statSync(name).isDirectory()) {
-            getFiles(name, allFiles)
-        } else if (file.endsWith(".ejs")) {
-            const relativePath = path
-                .relative(viewsDir, name)
-                .replace(/\\/g, "/")
-            allFiles[relativePath] = fs.readFileSync(name, "utf8")
-        }
-    })
-    return allFiles
-}
-
 function getAssets() {
     const assetData = {}
 
@@ -37,10 +21,6 @@ function getAssets() {
 
     // 2. Fonts
     const fontsToLoad = [
-        {
-            key: "font-anek-bangla",
-            path: "fonts/Anek_Bangla/AnekBangla-VariableFont_wdth,wght.ttf"
-        },
         { key: "poppins-regular", path: "fonts/Poppins/Poppins-Regular.ttf" },
         { key: "poppins-bold", path: "fonts/Poppins/Poppins-Bold.ttf" },
         { key: "poppins-italic", path: "fonts/Poppins/Poppins-Italic.ttf" },
@@ -64,7 +44,6 @@ function getAssets() {
     return assetData
 }
 
-const templates = getFiles(viewsDir)
 const assets = getAssets()
 
 const tsContent = `

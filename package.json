@@ -16,26 +16,32 @@
     },
     "scripts": {
         "build": "node scripts/bundle-templates.js && tsc",
-        "dev:bundle": "nodemon --watch src/views --watch src/assets -e ejs,png,svg,jpg --exec \"node scripts/bundle-templates.js\"",
         "dev:tsc": "tsc --watch",
-        "dev": "concurrently \"npm run dev:bundle\" \"npm run dev:tsc\"",
         "release": "npm version patch && npm publish"
     },
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    },
+    "peerDependencies": {
+        "date-fns": "^4.1.0"
+    },
     "dependencies": {
-        "date-fns": "^4.1.0",
         "pdfmake": "^0.3.5"
     },
     "devDependencies": {
         "@types/node": "^25.0.10",
         "@types/pdfmake": "^0.3.2",
-        "concurrently": "^9.2.1",
-        "nodemon": "^3.1.14",
         "prettier": "^3.8.1",
         "prettier-plugin-organize-imports": "^4.3.0",
+        "tsx": "^4.21.0",
         "typescript": "^5.9.3"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "type": "commonjs"
+    "type": "module",
+    "module": "./dist/index.js"
 }
